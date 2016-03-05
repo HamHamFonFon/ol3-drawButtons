@@ -37,7 +37,7 @@
 
     // Map constructor
     var map = new ol.Map({
-        layers: [osm, vector_draw],
+        layers: [osm],
         target: 'map',
         controls: ol.control.defaults({
             attributionOptions: ({
@@ -64,4 +64,5 @@
     var buttonsDrawControls = new ol.control.DrawButtons(options);
     buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
+
 })();
