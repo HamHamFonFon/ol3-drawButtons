@@ -1,13 +1,14 @@
 (function() {
 
-    var zoomView = 15;
+    var zoomView = 5;
 
     // OpenStreetMap layer
-    var osm = new ol.layer.Tile({
-            title : 'OSM',
-            visible : true,
-            type: 'overlays',
-            source: new ol.source.OSM()
+    var base_layer = new ol.layer.Tile({
+            title: 'Satellite',
+            type: 'base',
+            source: new ol.source.MapQuest(
+                {layer: 'sat'}
+            )
         }
     );
 
@@ -32,27 +33,27 @@
     });
 
     var view = new ol.View({
-        zoom: zoomView
+        zoom: zoomView,
+        center: ol.proj.transform([2.21, 46.23], 'EPSG:4326', 'EPSG:3857'),
     });
 
     // Map constructor
     var map = new ol.Map({
-        layers: [osm],
+        layers: [base_layer, vector_draw],
         target: 'map',
         controls: ol.control.defaults({
             attributionOptions: ({
                 collapsible: false
             })
-        }).extend([
-            new ol.control.ScaleLine(),
-        ]),
+        }),
+
         view: view
     });
 
     // Ajout des boutons de dessins
     var options = {
         "selectedLayer": vector_draw,
-        "popup_form" : true,
+        "popup_form" : false,
         "draw": {
             "Point": true,
             "LineString": true,
