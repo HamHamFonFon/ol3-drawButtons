@@ -13,6 +13,10 @@ ol.control.DrawButtons = function (opt_options) {
     this.selectedLayers = options.selectedLayer;
     var this_ = this;
 
+    if (options.style_buttons == undefined) {
+        options.style_buttons = "default";
+    }
+
     if (options.popup_form == true) {
         this.popup = document.getElementById('popup');
     }
@@ -135,7 +139,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonPoint.setAttribute('title', 'Draw point');
     buttonPoint.id = buttonPoint.draw = 'Point';
     buttonPoint.type_control = 'draw';
-    buttonPoint.className = 'glyphicon glyphicon-map-marker glyphicon-vector-path-point';
     buttonPoint.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonPoint);
 
@@ -144,7 +147,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonLine.setAttribute('title', 'Draw line');
     buttonLine.id = buttonLine.draw = 'LineString';
     buttonLine.type_control = 'draw';
-    buttonLine.className = 'glyphicon glyphicon-vector-path-line';
     buttonLine.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonLine);
 
@@ -153,7 +155,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonSquare.setAttribute('title', 'Draw square');
     buttonSquare.id = buttonSquare.draw = 'Square';
     buttonSquare.type_control = 'draw';
-    buttonSquare.className = 'glyphicon glyphicon-vector-path-square';
     buttonSquare.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonSquare);
 
@@ -162,7 +163,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonCircle.setAttribute('title', 'Draw circle');
     buttonCircle.id = buttonCircle.draw = 'Circle';
     buttonCircle.type_control = 'draw';
-    buttonCircle.className = 'glyphicon glyphicon-vector-path-circle';
     buttonCircle.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonCircle);
 
@@ -171,7 +171,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonPolygone.setAttribute('title', 'Draw polygone');
     buttonPolygone.id = buttonPolygone.draw = 'Polygon';
     buttonPolygone.type_control = 'draw';
-    buttonPolygone.className = 'glyphicon glyphicon-vector-path-polygon';
     buttonPolygone.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonPolygone);
 
@@ -180,7 +179,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonDrawEnd.setAttribute('title', 'Ending draw mode');
     buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
     buttonDrawEnd.type_control = 'ending';
-    buttonDrawEnd.className = 'glyphicon glyphicon-ok glyphicon-vector-path-ok hidden';
     buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
     elementDrawButtons.push(buttonDrawEnd);
 
@@ -190,7 +188,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonEdit.setAttribute('title', 'Edit feature');
     buttonEdit.id = 'Edit';
     buttonEdit.type_control = 'edit';
-    buttonEdit.className = 'glyphicon glyphicon-pencil glyphicon-vector-path-pencil';
     buttonEdit.addEventListener('click', handleControlsClick, false);
     elementDrawControls.push(buttonEdit);
 
@@ -199,7 +196,6 @@ ol.control.DrawButtons = function (opt_options) {
     buttonDel.setAttribute('title', 'Delete feature');
     buttonDel.id = 'Delete';
     buttonDel.type_control = 'delete';
-    buttonDel.className = 'glyphicon glyphicon-trash glyphicon-vector-path-trash';
     buttonDel.addEventListener('click', handleControlsClick, false);
     elementDrawControls.push(buttonDel);
 
@@ -207,9 +203,34 @@ ol.control.DrawButtons = function (opt_options) {
     buttonControlEnd.setAttribute('title', 'Ending control mode');
     buttonControlEnd.id = 'Ending';
     buttonControlEnd.type_control = 'ending';
-    buttonControlEnd.className = 'glyphicon glyphicon-ok glyphicon-vector-path-ok hidden';
     buttonControlEnd.addEventListener('click', handleGroupEnd, false);
     elementDrawControls.push(buttonControlEnd);
+
+    // /!\ if you want to use glyphicon, you must have Bootstrap
+    if (options.style_buttons == "glyphicon") {
+        buttonPoint.className = 'glyphicon glyphicon-map-marker';
+        buttonLine.className = 'glyphicon glyphicon-vector-path-line';
+        buttonSquare.className = 'glyphicon glyphicon-vector-path-square';
+        buttonCircle.className = 'glyphicon glyphicon-vector-path-circle';
+        buttonPolygone.className = 'glyphicon glyphicon-vector-path-polygon';
+        buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
+
+        buttonEdit.className = 'glyphicon glyphicon-pencil';
+        buttonDel.className = 'glyphicon glyphicon-trash';
+        buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
+
+    } else {
+        buttonPoint.className = 'glyphicon-vector-path-point';
+        buttonLine.className = 'glyphicon-vector-path-line';
+        buttonSquare.className = 'glyphicon-vector-path-square';
+        buttonCircle.className = 'glyphicon-vector-path-circle';
+        buttonPolygone.className = 'glyphicon-vector-path-polygon';
+        buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
+
+        buttonEdit.className = 'glyphicon-vector-path-pencil';
+        buttonDel.className = 'glyphicon-vector-path-trash';
+        buttonControlEnd.className = 'glyphicon-vector-path-ok hidden';
+    }
 
     // Containers
     var divDraw = document.createElement('div');
