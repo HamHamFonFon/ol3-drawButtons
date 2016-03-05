@@ -12,11 +12,23 @@
     );
 
     // Test edit layer
-    var layer_test = new ol.layer.Vector({
-        source: kuzzleSourceVector,
-        title: key,
-        type: 'base',
-        visible: true,
+    var vector_draw = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255, 0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ffcc33',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#ffcc33'
+                })
+            })
+        })
     });
 
     var view = new ol.View({
@@ -25,7 +37,7 @@
 
     // Map constructor
     var map = new ol.Map({
-        layers: [osm, layer_test],
+        layers: [osm, vector_draw],
         target: 'map',
         controls: ol.control.defaults({
             attributionOptions: ({
@@ -39,7 +51,7 @@
 
     // Ajout des boutons de dessins
     var options = {
-        "selectedLayer": layer_test,
+        "selectedLayer": vector_draw,
         "popup_form" : true,
         "draw": {
             "Point": true,
@@ -50,6 +62,6 @@
         }
     };
     var buttonsDrawControls = new ol.control.DrawButtons(options);
-    buttonsDrawControls.setSelectedLayer(layer_test);
+    buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
 })();
