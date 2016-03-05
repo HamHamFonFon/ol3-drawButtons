@@ -14,6 +14,9 @@ Requirements
 Examples
 -------------
 
+This exemple is showing how to use the plugin
+	
+  - [Basic usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/index.html) : you can add new features to the map, then editing or deleting them
 
 API
 -------------
