@@ -36,4 +36,5 @@ See also
 -------------
 My POC based on [Kuzzle](http://kuzzle.io/) : [Kurtography](https://github.com/HamHamFonFon/kurtogaphy)
 
-Hey! I'm your first Markdown document in **StackEdit**[^stackedit]. Don't delete me, I'm very helpful! I can be recovered anyway in the **Utils** tab of the <i class="icon-cog"></i> **Settings** dialog.
+
+README.md edited by [StackEdit](https://stackedit.io)
