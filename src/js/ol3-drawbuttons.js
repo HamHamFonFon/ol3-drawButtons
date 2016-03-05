@@ -331,6 +331,10 @@ ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
                 console.log(feature.getGeometry());
             });
             console.log(feature.getGeometry());
+
+            // ---------------------------------------------- //
+            // Here, override for updating into your database //
+            // ---------------------------------------------- //
         });
 
         // Modify interaction
@@ -373,8 +377,12 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
                 // remove from selected Layer
                 this_.getSelectedLayer().getSource().removeFeature(feature);
 
-                // Here, override for deleting from your database
+                // Remove from interaction
+                selectInteraction.getFeatures().remove(feature);
 
+                // ---------------------------------------------- //
+                // Here, override for deleting from your database //
+                // ---------------------------------------------- //
             } else {
                 selectInteraction.getFeatures().remove(feature);
             }
@@ -455,6 +463,10 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
 
     //console.log(feature.getGeometry().getCoordinates());
     console.log(featureGeoJSON);
+
+    // -------------------------------------------- //
+    // Here, override for adding into your database //
+    // -------------------------------------------- //
 };
 
 
