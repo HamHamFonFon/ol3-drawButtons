@@ -1,0 +1,48 @@
+/*Surcharge de glyphicon*/
+.glyphicon-vector-path-square {
+    background-image: url("../images/glyphicons-300-vector-path-square.png");
+}
+.glyphicon-vector-path-circle {
+    background-image: url("../images/glyphicons-301-vector-path-circle.png");
+}
+.glyphicon-vector-path-line {
+    background-image: url("../images/glyphicons-302-vector-path-line.png");
+}
+.glyphicon-vector-path-curve {
+    background-image: url("../images/glyphicons-303-vector-path-curve.png");
+}
+.glyphicon-vector-path-all {
+    background-image: url("../images/glyphicons-304-vector-path-all.png");
+}
+.glyphicon-vector-path-polygon {
+    background-image: url("../images/glyphicons-305-vector-path-polygon.png");
+ }
+
+.toggle-control {
+    position: absolute;
+    top: 6.5em;
+    right: 0.5em;
+    text-align: left;
+}
+
+.toggle-control button {
+    width : 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.toggle-control button.enable {
+    text-decoration: none;
+    background-color: #4c6079;
+    background-color: rgba(0,60,136,0.7);
+}
+
+.toggle-control button.hidden {
+    display: none;
+}
+
+.toggle-control button:disabled {
+    text-decoration: none;
+    background-color: rgba(149, 160, 164, 0.7);
+}
