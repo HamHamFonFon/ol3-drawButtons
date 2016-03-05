@@ -453,7 +453,7 @@ ol.control.DrawButtons.prototype.getSelectedLayer = function()
  * Add a flag if Mode draw or not
  * @param flagDraw
  */
-ol.control.DrawButtons.prototype.setFlagDraw = function(/** @type boolean} */flagDraw)
+ol.control.DrawButtons.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
 {
     this.flagDraw = flagDraw;
 };

@@ -1,4 +1,25 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "name": "ol3-drawButtons",
+  "version": "0.1.0",
+  "description" : "Drawing, edit, delete control for OpenLayers 3 features",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HamHamFonFon/ol3-drawButtons.git"
+  },
+  "author": "Stéphane MEAUDRE",
+  "keywords": [
+    "openlayers",
+    "Draw",
+    "ol3"
+  ],
+  "bugs": {
+    "url": "https://github.com/HamHamFonFon/ol3-drawButtons/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "openlayers": "~3.10.0"
+  },
+  "scripts" : {
+    "doc":
+  }
 }
