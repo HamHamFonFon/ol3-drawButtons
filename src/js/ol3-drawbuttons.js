@@ -135,7 +135,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonPoint.setAttribute('title', 'Draw point');
     buttonPoint.id = buttonPoint.draw = 'Point';
     buttonPoint.type_control = 'draw';
-    buttonPoint.className = 'glyphicon glyphicon-map-marker';
+    buttonPoint.className = 'glyphicon glyphicon-map-marker glyphicon-vector-path-point';
     buttonPoint.addEventListener('click', handleButtonsClick, false);
     elementDrawButtons.push(buttonPoint);
 
@@ -180,7 +180,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonDrawEnd.setAttribute('title', 'Ending draw mode');
     buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
     buttonDrawEnd.type_control = 'ending';
-    buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
+    buttonDrawEnd.className = 'glyphicon glyphicon-ok glyphicon-vector-path-ok hidden';
     buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
     elementDrawButtons.push(buttonDrawEnd);
 
@@ -190,7 +190,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonEdit.setAttribute('title', 'Edit feature');
     buttonEdit.id = 'Edit';
     buttonEdit.type_control = 'edit';
-    buttonEdit.className = 'glyphicon glyphicon glyphicon-pencil';
+    buttonEdit.className = 'glyphicon glyphicon-pencil glyphicon-vector-path-pencil';
     buttonEdit.addEventListener('click', handleControlsClick, false);
     elementDrawControls.push(buttonEdit);
 
@@ -199,7 +199,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonDel.setAttribute('title', 'Delete feature');
     buttonDel.id = 'Delete';
     buttonDel.type_control = 'delete';
-    buttonDel.className = 'glyphicon glyphicon glyphicon-trash';
+    buttonDel.className = 'glyphicon glyphicon-trash glyphicon-vector-path-trash';
     buttonDel.addEventListener('click', handleControlsClick, false);
     elementDrawControls.push(buttonDel);
 
@@ -207,7 +207,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonControlEnd.setAttribute('title', 'Ending control mode');
     buttonControlEnd.id = 'Ending';
     buttonControlEnd.type_control = 'ending';
-    buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
+    buttonControlEnd.className = 'glyphicon glyphicon-ok glyphicon-vector-path-ok hidden';
     buttonControlEnd.addEventListener('click', handleGroupEnd, false);
     elementDrawControls.push(buttonControlEnd);
 

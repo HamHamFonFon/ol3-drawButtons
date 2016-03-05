@@ -1,22 +1,38 @@
 /*Surcharge de glyphicon*/
+.glyphicon-vector-path-point {
+    background-image: url("../images/glyphicons-336-pushpin.png");
+}
+.glyphicon-vector-path-line {
+    background-image: url("../images/glyphicons-302-vector-path-line.png");
+}
 .glyphicon-vector-path-square {
     background-image: url("../images/glyphicons-300-vector-path-square.png");
 }
 .glyphicon-vector-path-circle {
     background-image: url("../images/glyphicons-301-vector-path-circle.png");
 }
-.glyphicon-vector-path-line {
-    background-image: url("../images/glyphicons-302-vector-path-line.png");
+.glyphicon-vector-path-polygon {
+    background-image: url("../images/glyphicons-305-vector-path-polygon.png");
 }
+.glyphicon-vector-path-ok {
+    background-image: url("../images/glyphicons-207-ok.png");
+}
+
+.glyphicon-vector-path-pencil {
+    background-image: url("../images/glyphicons-31-pencil.png");
+}
+.glyphicon-vector-path-trash {
+    background-image: url("../images/glyphicons-17-bin.png");
+}
+
+/*
 .glyphicon-vector-path-curve {
     background-image: url("../images/glyphicons-303-vector-path-curve.png");
 }
 .glyphicon-vector-path-all {
     background-image: url("../images/glyphicons-304-vector-path-all.png");
 }
-.glyphicon-vector-path-polygon {
-    background-image: url("../images/glyphicons-305-vector-path-polygon.png");
- }
+*/
 
 .toggle-control {
     position: absolute;
