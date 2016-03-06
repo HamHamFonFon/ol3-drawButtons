@@ -3,13 +3,19 @@ OpenLayers Draw Plugin
 
 Welcome !! DrawButtons is an OpenLayers 3 plugin for drawing new features, edit or delete feature from map. See [usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/index.html) for demo.
 
-Status
+Plugin Status
 -------------
-Beta version 0.1.0, in current developpement.
+Is currently in Beta stage of development.
+v. 0.1.0
 
 Requirements
 -------------
  - Openlayers 3
+
+
+Getting started
+-------------
+  - Clone the repository : git clone git@github.com:HamHamFonFon/ol3-drawButtons.git ol3-drawButtons
 
 Examples
 -------------
