@@ -129,6 +129,8 @@ ol.control.DrawButtons = function (opt_options) {
 
         // Removing interaction
         this_.map.removeInteraction(this_.draw);
+        this_.map.removeInteraction(this_.edit);
+        this_.map.removeInteraction(this_.del);
         this_.setFlagDraw(false); // Desactivation of drawing flag
         e.preventDefault();
     };
@@ -299,7 +301,6 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
 
         this.map.addInteraction(draw);
     }
-
 };
 
 
@@ -338,7 +339,7 @@ ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
         });
 
         // Modify interaction
-        var mod = new ol.interaction.Modify({
+        var mod = this.mod = new ol.interaction.Modify({
             features: selectInteraction.getFeatures(),
             style: this.styleEdit()
         });
@@ -362,7 +363,7 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
         this.map = this.getMap();
 
         // Select Interaction
-        var selectInteraction = new ol.interaction.Select({
+        var selectInteraction = this.del = new ol.interaction.Select({
             condition: ol.events.condition.click,
             source : function(layer) {
                 if (layer == this.getSelectedLayer()) {
