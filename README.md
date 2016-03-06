@@ -18,7 +18,7 @@ Getting started
   - Clone the repository : `git clone git@github.com:HamHamFonFon/ol3-drawButtons.git ol3-drawButtons`
   - Adding script JS and style CSS on your HTML code
 
-Examples
+Demo examples
 -------------
 
 This exemple is showing how to use the plugin
@@ -29,7 +29,6 @@ API
 -------------
 
 ### `new ol.control.DrawButtons(opt_options)`
-
 
 #### Options parameters
 
@@ -45,8 +44,10 @@ API
 |  - Circle        |`Boolean`|Show circle button|
 |  - Polygon       |`Boolean`|Show polygon button|
 
-```javascript
 
+#### Exemple usage
+
+```javascript
 var optionsControlDraw = {
     "selectedLayer": myVectorLayer,
     "popup_form" : false,
@@ -68,9 +69,14 @@ var buttonsDrawControls = new ol.control.DrawButtons(optionsControlDraw);
 
 #### Methods
 
+##### `setSelectedLayer()`
+Set a layer who may be different tha the one in options array
+```javascript
+buttonsDrawControls.setSelectedLayer(otherVectorLayer);
+```
+
 TODO and In progress
 -------------
-  - Write API in readme.md
   - Add popin for adding properties to new feature
   - Debug deleting feature
    
