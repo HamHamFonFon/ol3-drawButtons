@@ -30,6 +30,7 @@ API
 
 ### `new ol.control.DrawButtons(opt_options)`
 
+
 #### Options parameters
 
 |Option name|Type|Description|
@@ -43,6 +44,23 @@ API
 |  - Square        |`Boolean`|Show square button|
 |  - Circle        |`Boolean`|Show circle button|
 |  - Polygon       |`Boolean`|Show polygon button|
+
+```javascript
+
+var optionsControlDraw = {
+    "selectedLayer": myVectorLayer,
+    "popup_form" : false,
+    "style_buttons" : (undefined !== typeof style_buttons)? "glyphicon" : "default",
+    "draw": {
+        "Point": true,
+        "LineString": true,
+        "Square": true,
+        "Circle": true,
+        "Polygon": true
+    }
+};
+var buttonsDrawControls = new ol.control.DrawButtons(optionsControlDraw);
+```
 
 #### Extends
 
