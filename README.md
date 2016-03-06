@@ -30,19 +30,25 @@ API
 
 ### `new ol.control.DrawButtons(opt_options)`
 
-### Options parameters
+#### Options parameters
 
 |Option name|Typed|Description|
  ----------------- | ---------------------------- | ------------------
 | selectedLayer |Vector layer| Your selected layer you want to work it |
 | popup_form    |boolean| (not implemented yet) |
-| style_buttons |string| Use bootstrap glyphicon or default CSS|
-| draw          |array| Select list of buttons|
+| style_buttons |string| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
+| draw          |array| Select buttons to show|
+|  - Point      |boolean||
+|  - LineString    |boolean||
+|  - Square        |boolean||
+|  - Circle        |boolean||
+|  - Polygon       |boolean||
 
 #### Extends
 
 `ol.control.Control`
 
+#### Methods
 
 TODO and In progress
 -------------
