@@ -32,17 +32,17 @@ API
 
 #### Options parameters
 
-|Option name|Typed|Description|
+|Option name|Type|Description|
  ----------------- | ---------------------------- | ------------------
-| selectedLayer |Vector layer| Your selected layer you want to work it |
-| popup_form    |boolean| (not implemented yet) |
-| style_buttons |string| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
-| draw          |array| Select buttons to show|
-|  - Point      |boolean||
-|  - LineString    |boolean||
-|  - Square        |boolean||
-|  - Circle        |boolean||
-|  - Polygon       |boolean||
+| `selectedLayer` |`Vector layer`| Your selected layer you want to work it |
+| `popup_form`    |`Boolean`| (not implemented yet) |
+| `style_buttons` |`String`| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
+| `draw`          |`Array`| Select buttons to show|
+|  - Point      |`Boolean`|Show point button|
+|  - LineString    |`Boolean`|Show line button|
+|  - Square        |`Boolean`|Show square button|
+|  - Circle        |`Boolean`|Show circle button|
+|  - Polygon       |`Boolean`|Show polygon button|
 
 #### Extends
 
