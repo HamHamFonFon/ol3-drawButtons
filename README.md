@@ -16,6 +16,7 @@ Requirements
 Getting started
 -------------
   - Clone the repository : `git clone git@github.com:HamHamFonFon/ol3-drawButtons.git ol3-drawButtons`
+  - Adding script JS and style CSS on your HTML code
 
 Examples
 -------------
@@ -27,9 +28,23 @@ This exemple is showing how to use the plugin
 API
 -------------
 
+### `new ol.control.DrawButtons(opt_options)`
+
+### Options parameters
+
+|Option name|Typed|Description|
+ ----------------- | ---------------------------- | ------------------
+| selectedLayer |Vector layer| Your selected layer you want to work it |
+| popup_form    |boolean| (not implemented yet) |
+| style_buttons |string| Use bootstrap glyphicon or default CSS|
+| draw          |array| Select list of buttons|
+
+#### Extends
+
+`ol.control.Control`
 
 
-TODO
+TODO and In progress
 -------------
   - Write API in readme.md
   - Add popin for adding properties to new feature
