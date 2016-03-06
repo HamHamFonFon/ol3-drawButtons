@@ -127,10 +127,14 @@ ol.control.DrawButtons = function (opt_options) {
             }
         }
 
-        // Removing interaction
-        this_.map.removeInteraction(this_.draw);
-        this_.map.removeInteraction(this_.mod);
-        this_.map.removeInteraction(this_.del);
+        // Removing adding interaction
+        this_.map.removeInteraction(this_.drawInteraction);
+        // Remove modify interaction
+        this_.map.removeInteraction(this_.editSelectInteraction);
+        this_.map.removeInteraction(this_.modifyInteraction);
+        // Remove delete interaction
+        this_.map.removeInteraction(this_.delInteraction);
+
         this_.setFlagDraw(false); // Desactivation of drawing flag
         e.preventDefault();
     };
@@ -288,7 +292,7 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
         }
 
         // Draw new item
-        var draw = this.draw = new ol.interaction.Draw({
+        var draw = this.drawInteraction = new ol.interaction.Draw({
             //features: features,
             source : this.getSelectedLayer().getSource(),
             features : new ol.Collection(),
@@ -320,13 +324,13 @@ ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
 
         // Select Interaction
         var selectedLayer = this.getSelectedLayer();
-        var selectInteraction = new ol.interaction.Select({
+        var editSelectInteraction = this.editSelectInteraction = new ol.interaction.Select({
             condition: ol.events.condition.click,
         });
-        this.map.addInteraction(selectInteraction);
+        this.map.addInteraction(editSelectInteraction);
 
         // Gestion des event sur la feature
-        selectInteraction.getFeatures().addEventListener('add', function (e) {
+        editSelectInteraction.getFeatures().addEventListener('add', function (e) {
             var feature = e.element;
             feature.addEventListener('change', function(e) {
                 console.log(feature.getGeometry());
@@ -339,8 +343,8 @@ ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
         });
 
         // Modify interaction
-        var mod = this.mod = new ol.interaction.Modify({
-            features: selectInteraction.getFeatures(),
+        var mod = this.modifyInteraction = new ol.interaction.Modify({
+            features: editSelectInteraction.getFeatures(),
             style: this.styleEdit()
         });
         this.map.addInteraction(mod);
@@ -363,7 +367,7 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
         this.map = this.getMap();
 
         // Select Interaction
-        var selectInteraction = this.del = new ol.interaction.Select({
+        var selectInteraction = this.delInteraction = new ol.interaction.Select({
             condition: ol.events.condition.click,
             source : function(layer) {
                 if (layer == this.getSelectedLayer()) {
