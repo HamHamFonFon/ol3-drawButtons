@@ -1,4 +1,7 @@
 /*Surcharge de glyphicon*/
+.white {
+    color : #FFFFFF;
+}
 .glyphicon-vector-path-point {
     background-image: url("../images/glyphicons-336-pushpin.png");
 }

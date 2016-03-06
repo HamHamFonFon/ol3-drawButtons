@@ -217,10 +217,10 @@ ol.control.DrawButtons = function (opt_options) {
     // /!\ if you want to use glyphicon, you must have Bootstrap
     if (options.style_buttons == "glyphicon") {
         buttonPoint.className = 'glyphicon glyphicon-map-marker';
-        buttonLine.className = 'glyphicon glyphicon-vector-path-line';
-        buttonSquare.className = 'glyphicon glyphicon-vector-path-square';
-        buttonCircle.className = 'glyphicon glyphicon-vector-path-circle';
-        buttonPolygone.className = 'glyphicon glyphicon-vector-path-polygon';
+        buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
+        buttonSquare.className = 'glyphicon icon-vector-path-square';
+        buttonCircle.className = 'glyphicon icon-vector-path-circle';
+        buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
         buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
 
         buttonEdit.className = 'glyphicon glyphicon-pencil';
