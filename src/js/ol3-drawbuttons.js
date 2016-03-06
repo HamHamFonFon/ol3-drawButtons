@@ -3,6 +3,8 @@
  * @param opt_options
  * @constructor
  * @extends ol.control.Control
+ *
+ * Minify : wget --post-data="input=`cat ol3-drawbuttons.js`" --output-document=ol3-drawbuttons.min.js https://javascript-minifier.com/raw
  */
 ol.control.DrawButtons = function (opt_options) {
 
