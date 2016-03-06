@@ -129,7 +129,7 @@ ol.control.DrawButtons = function (opt_options) {
 
         // Removing interaction
         this_.map.removeInteraction(this_.draw);
-        this_.map.removeInteraction(this_.edit);
+        this_.map.removeInteraction(this_.mod);
         this_.map.removeInteraction(this_.del);
         this_.setFlagDraw(false); // Desactivation of drawing flag
         e.preventDefault();
