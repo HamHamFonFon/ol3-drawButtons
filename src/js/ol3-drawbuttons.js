@@ -132,6 +132,7 @@ ol.control.DrawButtons = function (opt_options) {
         // Removing adding interaction
         this_.map.removeInteraction(this_.drawInteraction);
         // Remove modify interaction
+        //this_.map.removeIn
         this_.map.removeInteraction(this_.editSelectInteraction);
         this_.map.removeInteraction(this_.modifyInteraction);
         // Remove delete interaction
@@ -188,6 +189,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
     buttonDrawEnd.type_control = 'ending';
     buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
+    buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
     elementDrawButtons.push(buttonDrawEnd);
 
 
@@ -212,6 +214,7 @@ ol.control.DrawButtons = function (opt_options) {
     buttonControlEnd.id = 'Ending';
     buttonControlEnd.type_control = 'ending';
     buttonControlEnd.addEventListener('click', handleGroupEnd, false);
+    buttonControlEnd.removeEventListener('dblclick', handleGroupEnd);
     elementDrawControls.push(buttonControlEnd);
 
     // /!\ if you want to use glyphicon, you must have Bootstrap
@@ -244,6 +247,7 @@ ol.control.DrawButtons = function (opt_options) {
     var divDraw = document.createElement('div');
     divDraw.className = 'div-draw ' + this.olGroupClassName;
     elementDrawButtons.forEach(function(button) {
+        button.removeEventListener("dblclick", handleButtonsClick);
         if(options.draw[button.draw] == true) {
             divDraw.appendChild(button);
         }
@@ -252,6 +256,7 @@ ol.control.DrawButtons = function (opt_options) {
     var divControls = document.createElement('div');
     divControls.className = 'div-controls ' + this.olGroupClassName;
     elementDrawControls.forEach(function(button) {
+        button.removeEventListener("dblclick", handleControlsClick);
         divControls.appendChild(button);
     });
 
@@ -290,7 +295,7 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
         // Specific for square
         if (typeSelect == 'Square') {
             typeSelect = 'Circle';
-            geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
+            geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
         }
 
         // Draw new item
