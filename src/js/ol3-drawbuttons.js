@@ -395,8 +395,6 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
                 // ---------------------------------------------- //
                 // Here, override for deleting from your database //
                 // ---------------------------------------------- //
-            } else {
-                selectInteraction.getFeatures().remove(feature);
             }
             e.preventDefault();
         });
