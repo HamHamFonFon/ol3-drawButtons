@@ -133,15 +133,39 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         }
 
         // Removing adding interaction
-        this_.map.removeInteraction(this_.drawInteraction);
+        if (undefined != this_.drawInteraction && this_.drawInteraction.getActive() == true) {
+            this_.drawInteraction.setActive(false);
+            this_.map.removeInteraction(this_.drawInteraction);
+        }
+
         // Remove modify interaction
-        //this_.map.removeIn
-        this_.map.removeInteraction(this_.editSelectInteraction);
-        this_.map.removeInteraction(this_.modifyInteraction);
+        if (undefined != this_.editSelectInteraction && this_.editSelectInteraction.getActive() == true) {
+            this_.editSelectInteraction.setActive(false);
+            this_.map.removeInteraction(this_.editSelectInteraction);
+        }
+        if (undefined != this_.delInteraction && this_.delInteraction.getActive()) {
+            this_.delInteraction.setActive(false);
+            this_.map.removeInteraction(this_.delInteraction);
+        }
+        if (undefined != this_.modifyInteraction && this_.modifyInteraction.getActive() == true) {
+            this_.modifyInteraction.setActive(false);
+            this_.map.removeInteraction(this_.modifyInteraction);
+        }
+
         // Remove delete interaction
-        this_.map.removeInteraction(this_.delInteraction);
+        if (undefined != this_.selectDelInteraction && this_.selectDelInteraction.getActive()) {
+            this_.selectDelInteraction.setActive(false);
+            this_.map.removeInteraction(this_.selectDelInteraction);
+        }
+        if (undefined != this_.delInteraction && this_.delInteraction.getActive()) {
+            this_.delInteraction.setActive(false);
+            this_.map.removeInteraction(this_.delInteraction);
+        }
 
         this_.setFlagDraw(false); // Desactivation of drawing flag
+
+        //this_.getSelectedLayer().getSource().clear();
+
         e.preventDefault();
     };
 
@@ -377,7 +401,7 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
         this.map = this.getMap();
 
         // Select Interaction
-        var selectInteraction = this.delInteraction = new ol.interaction.Select({
+        var selectDelInteraction = this.selectDelInteraction = new ol.interaction.Select({
             condition: ol.events.condition.click,
             source : function(layer) {
                 if (layer == this.getSelectedLayer()) {
@@ -385,16 +409,21 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
                 }
             }
         });
+        this.map.addInteraction(selectDelInteraction);
+
         var this_ = this;
-        selectInteraction.getFeatures().addEventListener('add', function(e) {
+        selectDelInteraction.getFeatures().addEventListener('add', function(e) {
             var feature = e.element;
             if(confirm('Are you sure you want to delete this feature ?')) {
-                // remove from selected Layer
-                this_.getSelectedLayer().getSource().removeFeature(feature);
+                try {
+                    // Remove from interaction
+                    selectDelInteraction.getFeatures().remove(feature);
 
-                // Remove from interaction
-                selectInteraction.getFeatures().remove(feature);
-
+                    // remove from selected Layer
+                    this_.getSelectedLayer().getSource().removeFeature(feature);
+                } catch (e) {
+                    console.log(e.message);
+                }
                 // ---------------------------------------------- //
                 // Here, override for deleting from your database //
                 // ---------------------------------------------- //
@@ -402,7 +431,15 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
             e.preventDefault();
         });
 
-        this.map.addInteraction(selectInteraction);
+        var delInteraction = this.delInteraction = new ol.interaction.Modify({
+            style: this.styleEdit(),
+            features: selectDelInteraction.getFeatures(),
+            deleteCondition: function(event) {
+                return ol.events.condition.singleClick(event);
+            }
+        });
+        // add it to the map
+        map.addInteraction(delInteraction);
     }
 };
 
