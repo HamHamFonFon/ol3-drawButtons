@@ -51,17 +51,18 @@
     background-position: center;
 }
 
-.toggle-control button.enable {
-    text-decoration: none;
-    background-color: #4c6079;
-    background-color: rgba(0,60,136,0.7);
-}
-
 .toggle-control button.hidden {
     display: none;
 }
+
+.toggle-control button.progress:disabled {
+    text-decoration: none;
+    background-color: rgba(44, 128, 27, 0.75);
+}
+
 
 .toggle-control button:disabled {
     text-decoration: none;
     background-color: rgba(149, 160, 164, 0.7);
 }
+

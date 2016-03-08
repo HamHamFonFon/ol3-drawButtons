@@ -53,6 +53,7 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
         for(var i = 0; i < divsChildren.length; i++) {
             divsChildren.item(i).classList.remove('enable');
+            divsChildren.item(i).classList.remove('progress');
             divsChildren.item(i).disabled = true;
         }
 
@@ -60,6 +61,7 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
         for(var i = 0; i < divsChildren.length; i++) {
             divsChildren.item(i).classList.remove('enable');
+            divsChildren.item(i).classList.remove('progress');
             divsChildren.item(i).disabled = true;
 
             if (divsChildren.item(i).type_control == 'ending') {
@@ -69,8 +71,8 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         }
 
         // Enable the actual button
-        e.target.classList.toggle('enable');
-        e.target.disabled = false;
+        e.target.classList.toggle('progress');
+        //e.target.disabled = false;
 
         this_.drawOnMap(e);
 
@@ -86,6 +88,7 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
         for(var i = 0; i < divsChildren.length; i++) {
             divsChildren.item(i).classList.remove('enable');
+            divsChildren.item(i).classList.remove('progress');
             divsChildren.item(i).disabled = true;
 
             if (divsChildren.item(i).type_control == 'ending') {
@@ -98,12 +101,13 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
         for(var i = 0; i < divsChildren.length; i++) {
             divsChildren.item(i).classList.remove('enable');
+            divsChildren.item(i).classList.remove('progress');
             divsChildren.item(i).disabled = true;
         }
 
         // Enable the actual button
-        e.target.classList.toggle('enable');
-        e.target.disabled = false;
+        e.target.classList.toggle('progress');
+        //e.target.disabled = false;
 
         switch (e.target.type_control) {
             case 'edit' :
@@ -399,6 +403,8 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
 
     if (this.getFlagDraw() == true) {
         this.map = this.getMap();
+
+        // TODO : set specific style on hover
 
         // Select Interaction
         var selectDelInteraction = this.selectDelInteraction = new ol.interaction.Select({
