@@ -439,7 +439,7 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
             }
         });
         // add it to the map
-        map.addInteraction(delInteraction);
+        this.map.addInteraction(delInteraction);
     }
 };
 
