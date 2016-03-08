@@ -83,7 +83,6 @@
 
     // Ajout des boutons de dessins
     var options = {
-        "selectedLayer": vector_draw,
         "popup_form" : false,
         "draw": {
             "Point": true,
@@ -93,7 +92,7 @@
             "Polygon": true
         }
     };
-    var buttonsDrawControls = new ol.control.DrawButtons(options);
+    var buttonsDrawControls = new ol.control.DrawButtons(vector_draw, options);
     buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
 

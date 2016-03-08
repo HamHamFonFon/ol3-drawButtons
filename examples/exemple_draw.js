@@ -50,9 +50,8 @@
         view: view
     });
 
-    // Ajout des boutons de dessins
+    // Adding draw controls
     var options = {
-        "selectedLayer": vector_draw,
         "popup_form" : false,
         "style_buttons" : null, /** @var {string} glyphicon|default */
         "draw": {
@@ -63,7 +62,7 @@
             "Polygon": true
         }
     };
-    var buttonsDrawControls = new ol.control.DrawButtons(options);
+    var buttonsDrawControls = new ol.control.DrawButtons(vector_draw, options);
     buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
 

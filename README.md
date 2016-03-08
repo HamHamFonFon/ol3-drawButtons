@@ -28,13 +28,35 @@ This exemple is showing how to use the plugin
 API
 -------------
 
-### `new ol.control.DrawButtons(opt_options)`
+### `new ol.control.DrawButtons(vector_layer, opt_options)`
+
+#### vector_layer
+Layer you will adding, edit or delete features
+```javascript
+var vector_draw = new ol.layer.Vector({
+    source: new ol.source.Vector(),
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#ffcc33',
+            width: 2
+        }),
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: '#ffcc33'
+            })
+        })
+    })
+});
+```
 
 #### Options parameters
 
 |Option name|Type|Description|
  ----------------- | ---------------------------- | ------------------
-| `selectedLayer` |`Vector layer`| Your selected layer you want to work it |
 | `popup_form`    |`Boolean`| (not implemented yet) |
 | `style_buttons` |`String`| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
 | `draw`          |`Array`| Select buttons to show|
@@ -49,7 +71,6 @@ API
 
 ```javascript
 var optionsControlDraw = {
-    "selectedLayer": myVectorLayer,
     "popup_form" : false,
     "style_buttons" : (undefined !== typeof style_buttons)? "glyphicon" : "default",
     "draw": {
@@ -60,7 +81,7 @@ var optionsControlDraw = {
         "Polygon": true
     }
 };
-var buttonsDrawControls = new ol.control.DrawButtons(optionsControlDraw);
+var buttonsDrawControls = new ol.control.DrawButtons(myVectorLayer, optionsControlDraw);
 ```
 
 #### Extends

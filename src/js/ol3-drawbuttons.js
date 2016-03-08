@@ -1,18 +1,21 @@
 /**
  * OpenLayers 3 Draw Control
- * @param opt_options
+ * @param ol.Vector.Layer selected_layer : layer
+ * @param array opt_options : options
  * @constructor
  * @extends ol.control.Control
  *
  * Minify : wget --post-data="input=`cat ol3-drawbuttons.js`" --output-document=ol3-drawbuttons.min.js https://javascript-minifier.com/raw
  */
-ol.control.DrawButtons = function (opt_options) {
+ol.control.DrawButtons = function (selected_layer, opt_options) {
+
+    // Set the selected layer
+    this.selectedLayers = selected_layer;
 
     // Get options
     var options = opt_options || {};
     options.draw.Ending = true;
 
-    this.selectedLayers = options.selectedLayer;
     var this_ = this;
 
     if (options.style_buttons == undefined) {
