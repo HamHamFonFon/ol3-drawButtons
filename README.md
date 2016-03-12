@@ -99,7 +99,8 @@ buttonsDrawControls.setSelectedLayer(otherVectorLayer);
 TODO and In progress
 -------------
   - Add popin for adding properties to new feature
-  - Debug deleting feature
+  - Using local storage
+  - Add plugins for record in databases
    
 Author(s)
 -------------

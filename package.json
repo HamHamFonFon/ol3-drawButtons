@@ -10,7 +10,8 @@
   "keywords": [
     "openlayers",
     "Draw control",
-    "ol3"
+    "ol3",
+    "Openlayers 3"
   ],
   "bugs": {
     "url": "https://github.com/HamHamFonFon/ol3-drawButtons/issues"
