@@ -53,6 +53,7 @@
     // Adding draw controls
     var options = {
         "style_buttons" : null, /** @var {string} glyphicon|default */
+        "local_storage" : true,
         "draw": {
             "Point": true,
             "LineString": true,

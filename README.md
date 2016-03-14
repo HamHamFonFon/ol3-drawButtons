@@ -25,6 +25,7 @@ This exemple is showing how to use the plugin
 	
   - [Basic usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
+  - [Use Locale Storage]()
 API
 -------------
 
@@ -74,7 +75,7 @@ var vector_draw = new ol.layer.Vector({
 var optionsControlDraw = {
     "popup_form" : false,
     "style_buttons" : (undefined !== typeof style_buttons)? "glyphicon" : "default",
-    "local_storage": false,
+    "local_storage": true,
     "draw": {
         "Point": true,
         "LineString": true,
@@ -101,7 +102,6 @@ buttonsDrawControls.setSelectedLayer(otherVectorLayer);
 TODO and In progress
 -------------
   - Add popin for adding properties to new feature
-  - Using local storage
   - Add plugins for record in databases
    
 Author(s)
