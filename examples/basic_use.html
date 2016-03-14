@@ -84,6 +84,7 @@
     // Ajout des boutons de dessins
     var options = {
         "popup_form" : false,
+        "locale_storage" : true,
         "draw": {
             "Point": true,
             "LineString": true,
@@ -93,7 +94,6 @@
         }
     };
     var buttonsDrawControls = new ol.control.DrawButtons(vector_draw, options);
-    buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
 
                     })();</pre>
@@ -104,6 +104,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.14.0/ol.js"></script>
         <script src="../src/js/ol3-drawbuttons.js"></script>
-        <script src="exemple_draw.js"></script>
+        <script src="basic_use.js"></script>
     </body>
 </html>

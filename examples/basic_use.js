@@ -52,7 +52,6 @@
 
     // Adding draw controls
     var options = {
-        "popup_form" : false,
         "style_buttons" : null, /** @var {string} glyphicon|default */
         "local_storage" : true,
         "draw": {
