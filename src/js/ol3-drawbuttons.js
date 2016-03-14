@@ -15,17 +15,40 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
     // Set of defaultLayer
     this.selectedLayers = selected_layer;
+    // Default values
+    this.typeSelect = 'Point';
+    this.map = this.getMap();
+    this.flagDraw = new Boolean(false);
+    this.flagLocStor = new Boolean(false);
+
+    this.setFlagDraw(this.flagDraw);
+    this.setFlagLocStor(this.flagLocStor);
 
     var this_ = this;
 
+
     // Set the selected layer : default layer or from localStorage
-    if (opt_options.local_storage == true) {
-        var layerLS = localStorage.getItem('layer');
-        if (layerLS != null) {
-            this.selectedLayers(layerLS);
+    this.setFlagLocStor(false);
+    if (options.local_storage == true) {
+        this.setFlagLocStor(true);
+        if (localStorage.getItem('layer') !== null) {
+            var layerLS = JSON.parse(localStorage.getItem('layer'));
+            this.setSelectedLayer(layerLS);
         } else {
             // Setting of selectedLayer in LocalStorage
-            //localStorage.setItem('layer', JSON.stringify(this.selectedLayers));
+            // Apply a callback
+            //var cbLayerToJson = function(layer) {
+            //    var i = 0;
+            //    return function(key, value) {
+            //        if(i !== 0 && typeof(layer) === 'object' && typeof(layer) == 'object' && layer == value)
+            //            return '[Circular]';
+            //        if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
+            //            return '[Unknown]';
+            //        ++i; // so we know we aren't using the original object anymore
+            //        return value;
+            //    }
+            //} ;
+            localStorage.setItem('layer', JSON.stringify(this.getSelectedLayer())/*, cbLayerToJson(this.selectedLayers)*/);
             this.setSelectedLayer(this.selectedLayers);
         }
     } else {
@@ -41,11 +64,6 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
         this.popup = document.getElementById('popup');
     }
 
-    // Default values
-    this.typeSelect = 'Point';
-    this.map = this.getMap();
-    this.flagDraw = new Boolean(false);
-    this.setFlagDraw(this.flagDraw);
 
     // Classes CSS
     this.olClassName = 'ol-unselectable ol-control';
@@ -538,21 +556,23 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
     // -------------------------------------------- //
     // Here, override for adding into your database //
     // -------------------------------------------- //
+
+    if (this.getFlagLocStor() == true) {
+        this.addFeatureInLocalStorage(feature);
+    }
 };
 
 // Record features in LocalStorage
-ol.control.DrawButtons.addFeatureInLocalStorage = function()
+ol.control.DrawButtons.prototype.addFeatureInLocalStorage = function(feature)
 {
-
+    this.getSelectedLayer().getSource().addFeature(feature);
+    localStorage.setItem('layer', this.getSelectedLayer());
 }
 
 // Load Layer from LocalStorage
-ol.control.DrawButtons.loadLayerFromLocaleStorage = function ()
-{
-
-
-
-}
+//ol.control.DrawButtons.loadLayerFromLocaleStorage = function ()
+//{
+//}
 
 
 // Getters/setters of selected layer :
@@ -579,4 +599,14 @@ ol.control.DrawButtons.prototype.setFlagDraw = function(/** @type {boolean} */fl
 ol.control.DrawButtons.prototype.getFlagDraw = function()
 {
     return this.flagDraw;
+};
+
+ol.control.DrawButtons.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
+{
+    this.flagLocStor = locStor;
+};
+
+ol.control.DrawButtons.prototype.getFlagLocStor = function()
+{
+    return this.flagLocStor;
 };

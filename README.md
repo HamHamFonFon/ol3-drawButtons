@@ -25,7 +25,8 @@ This exemple is showing how to use the plugin
 	
   - [Basic usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
-  - [Use Locale Storage]()
+  - In progress : [Use Locale Storage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/local_storage.html) : use localStorage to store layer
+
 API
 -------------
 
