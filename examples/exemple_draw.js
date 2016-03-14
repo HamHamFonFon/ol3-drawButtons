@@ -54,6 +54,7 @@
     var options = {
         "popup_form" : false,
         "style_buttons" : null, /** @var {string} glyphicon|default */
+        "local_storage" : true,
         "draw": {
             "Point": true,
             "LineString": true,
@@ -63,7 +64,7 @@
         }
     };
     var buttonsDrawControls = new ol.control.DrawButtons(vector_draw, options);
-    buttonsDrawControls.setSelectedLayer(vector_draw);
+    //buttonsDrawControls.setSelectedLayer(vector_draw);
     map.addControl(buttonsDrawControls);
 
 })();

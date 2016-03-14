@@ -59,6 +59,7 @@ var vector_draw = new ol.layer.Vector({
  ----------------- | ---------------------------- | ------------------
 | `popup_form`    |`Boolean`| (not implemented yet) |
 | `style_buttons` |`String`| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
+| `local_storage` |`Boolean`| (in progress) Possibility to record Layer in Local Storage
 | `draw`          |`Array`| Select buttons to show|
 |  - Point      |`Boolean`|Show point button|
 |  - LineString    |`Boolean`|Show line button|
@@ -73,6 +74,7 @@ var vector_draw = new ol.layer.Vector({
 var optionsControlDraw = {
     "popup_form" : false,
     "style_buttons" : (undefined !== typeof style_buttons)? "glyphicon" : "default",
+    "local_storage": false,
     "draw": {
         "Point": true,
         "LineString": true,

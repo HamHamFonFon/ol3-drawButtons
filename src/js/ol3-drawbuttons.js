@@ -9,19 +9,34 @@
  */
 ol.control.DrawButtons = function (selected_layer, opt_options) {
 
-    // Set the selected layer
-    this.selectedLayers = selected_layer;
-
     // Get options
     var options = opt_options || {};
     options.draw.Ending = true;
 
+    // Set of defaultLayer
+    this.selectedLayers = selected_layer;
+
     var this_ = this;
+
+    // Set the selected layer : default layer or from localStorage
+    if (opt_options.local_storage == true) {
+        var layerLS = localStorage.getItem('layer');
+        if (layerLS != null) {
+            this.selectedLayers(layerLS);
+        } else {
+            // Setting of selectedLayer in LocalStorage
+            //localStorage.setItem('layer', JSON.stringify(this.selectedLayers));
+            this.setSelectedLayer(this.selectedLayers);
+        }
+    } else {
+        this.setSelectedLayer(this.selectedLayers);
+    }
 
     if (options.style_buttons == undefined) {
         options.style_buttons = "default";
     }
 
+    // Not implemented yet
     if (options.popup_form == true) {
         this.popup = document.getElementById('popup');
     }
@@ -524,6 +539,20 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
     // Here, override for adding into your database //
     // -------------------------------------------- //
 };
+
+// Record features in LocalStorage
+ol.control.DrawButtons.addFeatureInLocalStorage = function()
+{
+
+}
+
+// Load Layer from LocalStorage
+ol.control.DrawButtons.loadLayerFromLocaleStorage = function ()
+{
+
+
+
+}
 
 
 // Getters/setters of selected layer :
