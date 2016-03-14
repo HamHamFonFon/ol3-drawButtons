@@ -26,30 +26,32 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
     var this_ = this;
 
-
     // Set the selected layer : default layer or from localStorage
     this.setFlagLocStor(false);
     if (options.local_storage == true) {
         this.setFlagLocStor(true);
         if (localStorage.getItem('layer') !== null) {
             var layerLS = JSON.parse(localStorage.getItem('layer'));
+            console.log("Load layer from localStorage");
             this.setSelectedLayer(layerLS);
         } else {
             // Setting of selectedLayer in LocalStorage
             // Apply a callback
-            //var cbLayerToJson = function(layer) {
-            //    var i = 0;
-            //    return function(key, value) {
-            //        if(i !== 0 && typeof(layer) === 'object' && typeof(layer) == 'object' && layer == value)
-            //            return '[Circular]';
-            //        if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-            //            return '[Unknown]';
-            //        ++i; // so we know we aren't using the original object anymore
-            //        return value;
-            //    }
-            //} ;
-            localStorage.setItem('layer', JSON.stringify(this.getSelectedLayer())/*, cbLayerToJson(this.selectedLayers)*/);
+            var cache = [];
+            localStorage.setItem('layer', JSON.stringify(this.selectedLayers, function(key, value) {
+                    if (typeof value === 'object' && value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Circular reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                })
+            );
             this.setSelectedLayer(this.selectedLayers);
+            //this.map.relo
         }
     } else {
         this.setSelectedLayer(this.selectedLayers);
@@ -558,6 +560,7 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
     // -------------------------------------------- //
 
     if (this.getFlagLocStor() == true) {
+        console.log("Store in LocalStorage " + feature.getGeometry().getCoordinates());
         this.addFeatureInLocalStorage(feature);
     }
 };
@@ -566,7 +569,21 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
 ol.control.DrawButtons.prototype.addFeatureInLocalStorage = function(feature)
 {
     this.getSelectedLayer().getSource().addFeature(feature);
-    localStorage.setItem('layer', this.getSelectedLayer());
+    var cache = [];
+    localStorage.setItem('layer', JSON.stringify( this.getSelectedLayer(), function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    // Circular reference found, discard key
+                    return;
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        })
+    );
+
+    //localStorage.setItem('layer', this.getSelectedLayer());
 }
 
 // Load Layer from LocalStorage
