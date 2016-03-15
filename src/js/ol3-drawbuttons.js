@@ -39,18 +39,11 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
             var sourceLS =  new ol.source.Vector({
                 features: featuresLS
             });
-
             this.selectedLayers.setSource(sourceLS);
-
-            this.setSelectedLayer(this.selectedLayers);
-        } else {
-            // Setting of selectedLayer in LocalStorage
-            // Apply a callback
-            this.setSelectedLayer(this.selectedLayers);
         }
-    } else {
-        this.setSelectedLayer(this.selectedLayers);
     }
+
+    this.setSelectedLayer(this.selectedLayers);
 
     if (options.style_buttons == undefined) {
         options.style_buttons = "default";
@@ -60,7 +53,6 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     if (options.popup_form == true) {
         this.popup = document.getElementById('popup');
     }
-
 
     // Classes CSS
     this.olClassName = 'ol-unselectable ol-control';
@@ -102,10 +94,8 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
         // Enable the actual button
         e.target.classList.toggle('progress');
-        //e.target.disabled = false;
 
         this_.drawOnMap(e);
-
         e.preventDefault();
     };
 
@@ -137,7 +127,6 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
         // Enable the actual button
         e.target.classList.toggle('progress');
-        //e.target.disabled = false;
 
         switch (e.target.type_control) {
             case 'edit' :
@@ -196,12 +185,11 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
             this_.map.removeInteraction(this_.delInteraction);
         }
 
-        if (this_.getFlagLocStor() == true) {
+        if (true == this_.getFlagLocStor()) {
             this_.setFeaturesInLocalStorage();
         }
 
         this_.setFlagDraw(false); // Desactivation of drawing flag
-
         e.preventDefault();
     };
 
@@ -376,7 +364,10 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
     }
 };
 
-// Endind drawing feature
+/**
+ * Event listener call when a new feature is created
+ * @param evt
+ */
 ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
 {
     var feature = evt.feature;
@@ -384,7 +375,6 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
 
     // Addind feature to source vector
     console.log("Add feature : " + feature.getGeometry().getCoordinates());
-    //this.getSelectedLayer().getSource().addFeature(feature);
 
     // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
     if ('Circle' == feature.type) {
@@ -392,10 +382,12 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
     } else {
         var featureGeoJSON = parser.writeFeatureObject(feature);
     }
-    //console.log(featureGeoJSON);
 };
 
-// Record features (geoJSON format) in LocalStorage
+/**
+ * Record features in local storage
+ * /!\ circles can't ge parsing in GeoJSON : https://github.com/openlayers/ol3/pull/3434
+ */
 ol.control.DrawButtons.prototype.setFeaturesInLocalStorage = function()
 {
     var features = this.getSelectedLayer().getSource().getFeatures();
@@ -569,14 +561,10 @@ ol.control.DrawButtons.prototype.styleEdit = function()
 };
 
 
-// Load Layer from LocalStorage
-//ol.control.DrawButtons.loadLayerFromLocaleStorage = function ()
-//{
-//}
-
-
-// Getters/setters of selected layer :
-// Set your layer according to your need :)
+/**
+ * Getters/setters of selected layer : Set your layer according to your need :)
+ * @param layer
+ */
 ol.control.DrawButtons.prototype.setSelectedLayer = function(layer)
 {
     this.selectedLayers = layer;
@@ -601,6 +589,10 @@ ol.control.DrawButtons.prototype.getFlagDraw = function()
     return this.flagDraw;
 };
 
+/**
+ * Flag for local storage
+ * @param locStor
+ */
 ol.control.DrawButtons.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
 {
     this.flagLocStor = locStor;
