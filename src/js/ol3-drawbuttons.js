@@ -29,21 +29,20 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     // Set the selected layer : default layer or from localStorage
     this.setFlagLocStor(false);
     if (options.local_storage == true) {
+
         this.setFlagLocStor(true);
         if (localStorage.getItem('features') !== null) {
 
-            var featuresLS = new ol.format.GeoJSON().readFeatures(
-                JSON.parse(localStorage.getItem('features')), {
-                }
-            );
+            // Create geojson features from local storage
+            var featuresLS = new ol.format.GeoJSON().readFeatures(JSON.parse(localStorage.getItem('features')));
 
             var sourceLS =  new ol.source.Vector({
                 features: featuresLS
             });
 
-            var layerLS = this.selectedLayers.setSource(sourceLS);
+            this.selectedLayers.setSource(sourceLS);
 
-            this.setSelectedLayer(layerLS);
+            this.setSelectedLayer(this.selectedLayers);
         } else {
             // Setting of selectedLayer in LocalStorage
             // Apply a callback
@@ -169,9 +168,6 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
         // Removing adding interaction
         if (undefined != this_.drawInteraction && this_.drawInteraction.getActive() == true) {
-            if (this_.getFlagLocStor() == true) {
-                this_.addFeaturesInLocalStorage();
-            }
             this_.drawInteraction.setActive(false);
             this_.map.removeInteraction(this_.drawInteraction);
         }
@@ -200,9 +196,11 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
             this_.map.removeInteraction(this_.delInteraction);
         }
 
-        this_.setFlagDraw(false); // Desactivation of drawing flag
+        if (this_.getFlagLocStor() == true) {
+            this_.setFeaturesInLocalStorage();
+        }
 
-        //this_.getSelectedLayer().getSource().clear();
+        this_.setFlagDraw(false); // Desactivation of drawing flag
 
         e.preventDefault();
     };
@@ -256,7 +254,6 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
     buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
     elementDrawButtons.push(buttonDrawEnd);
-
 
     // Edit
     var buttonEdit = this.buttonEdit = document.createElement('button');
@@ -399,7 +396,7 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
 };
 
 // Record features (geoJSON format) in LocalStorage
-ol.control.DrawButtons.prototype.addFeaturesInLocalStorage = function()
+ol.control.DrawButtons.prototype.setFeaturesInLocalStorage = function()
 {
     var features = this.getSelectedLayer().getSource().getFeatures();
     var parser = new ol.format.GeoJSON();

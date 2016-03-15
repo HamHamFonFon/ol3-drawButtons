@@ -6,7 +6,7 @@ Welcome !! DrawButtons is an OpenLayers 3 plugin for drawing new features, edit 
 Plugin Status
 -------------
 Is currently in Beta stage of development.
-v. 0.1.0
+v. 0.3.1
 
 Requirements
 -------------
@@ -25,7 +25,7 @@ This exemple is showing how to use the plugin
 	
   - [Basic usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
-  - In progress : [Use Locale Storage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/local_storage.html) : use localStorage to store layer
+  - [Use Locale Storage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/Use-localStorage/examples/local_storage.html) : use localStorage to store features
 
 API
 -------------
