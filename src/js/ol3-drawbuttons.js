@@ -30,28 +30,24 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     this.setFlagLocStor(false);
     if (options.local_storage == true) {
         this.setFlagLocStor(true);
-        if (localStorage.getItem('layer') !== null) {
-            var layerLS = JSON.parse(localStorage.getItem('layer'));
-            console.log("Load layer from localStorage");
+        if (localStorage.getItem('features') !== null) {
+
+            var featuresLS = new ol.format.GeoJSON().readFeatures(
+                JSON.parse(localStorage.getItem('features')), {
+                }
+            );
+
+            var sourceLS =  new ol.source.Vector({
+                features: featuresLS
+            });
+
+            var layerLS = this.selectedLayers.setSource(sourceLS);
+
             this.setSelectedLayer(layerLS);
         } else {
             // Setting of selectedLayer in LocalStorage
             // Apply a callback
-            var cache = [];
-            localStorage.setItem('layer', JSON.stringify(this.selectedLayers, function(key, value) {
-                    if (typeof value === 'object' && value !== null) {
-                        if (cache.indexOf(value) !== -1) {
-                            // Circular reference found, discard key
-                            return;
-                        }
-                        // Store value in our collection
-                        cache.push(value);
-                    }
-                    return value;
-                })
-            );
             this.setSelectedLayer(this.selectedLayers);
-            //this.map.relo
         }
     } else {
         this.setSelectedLayer(this.selectedLayers);
@@ -173,6 +169,9 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
 
         // Removing adding interaction
         if (undefined != this_.drawInteraction && this_.drawInteraction.getActive() == true) {
+            if (this_.getFlagLocStor() == true) {
+                this_.addFeaturesInLocalStorage();
+            }
             this_.drawInteraction.setActive(false);
             this_.map.removeInteraction(this_.drawInteraction);
         }
@@ -380,6 +379,40 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
     }
 };
 
+// Endind drawing feature
+ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
+{
+    var feature = evt.feature;
+    var parser = new ol.format.GeoJSON();
+
+    // Addind feature to source vector
+    console.log("Add feature : " + feature.getGeometry().getCoordinates());
+    //this.getSelectedLayer().getSource().addFeature(feature);
+
+    // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
+    if ('Circle' == feature.type) {
+        //var parserCircle = parser.writeCircleGeometry_()
+    } else {
+        var featureGeoJSON = parser.writeFeatureObject(feature);
+    }
+    //console.log(featureGeoJSON);
+};
+
+// Record features (geoJSON format) in LocalStorage
+ol.control.DrawButtons.prototype.addFeaturesInLocalStorage = function()
+{
+    var features = this.getSelectedLayer().getSource().getFeatures();
+    var parser = new ol.format.GeoJSON();
+
+    if (features.length > 0) {
+        var featuresGeoJson = parser.writeFeatures(features)
+        localStorage.clear();
+        console.log('Number of feature : ' + features.length);
+        console.log(featuresGeoJson);
+        localStorage.setItem('features', JSON.stringify(featuresGeoJson));
+    }
+}
+
 
 /**
  * Edit or delete a feature
@@ -538,53 +571,6 @@ ol.control.DrawButtons.prototype.styleEdit = function()
     return style;
 };
 
-
-// Endind drawing feature
-ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
-{
-    var feature = evt.feature;
-    var parser = new ol.format.GeoJSON();
-
-    // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
-    if ('Circle' == feature.type) {
-        //var parserCircle = parser.writeCircleGeometry_()
-    } else {
-        var featureGeoJSON = parser.writeFeatureObject(feature);
-    }
-
-    //console.log(feature.getGeometry().getCoordinates());
-    console.log(featureGeoJSON);
-
-    // -------------------------------------------- //
-    // Here, override for adding into your database //
-    // -------------------------------------------- //
-
-    if (this.getFlagLocStor() == true) {
-        console.log("Store in LocalStorage " + feature.getGeometry().getCoordinates());
-        this.addFeatureInLocalStorage(feature);
-    }
-};
-
-// Record features in LocalStorage
-ol.control.DrawButtons.prototype.addFeatureInLocalStorage = function(feature)
-{
-    this.getSelectedLayer().getSource().addFeature(feature);
-    var cache = [];
-    localStorage.setItem('layer', JSON.stringify( this.getSelectedLayer(), function(key, value) {
-            if (typeof value === 'object' && value !== null) {
-                if (cache.indexOf(value) !== -1) {
-                    // Circular reference found, discard key
-                    return;
-                }
-                // Store value in our collection
-                cache.push(value);
-            }
-            return value;
-        })
-    );
-
-    //localStorage.setItem('layer', this.getSelectedLayer());
-}
 
 // Load Layer from LocalStorage
 //ol.control.DrawButtons.loadLayerFromLocaleStorage = function ()
