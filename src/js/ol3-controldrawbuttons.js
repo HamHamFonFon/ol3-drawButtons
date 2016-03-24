@@ -7,8 +7,10 @@
  *
  * Minify : wget --post-data="input=`cat ol3-drawbuttons.js`" --output-document=ol3-drawbuttons.min.js https://javascript-minifier.com/raw
  */
-//require('ol3-drawbuttons.js');
+
 ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
+
+    //require('ol3-drawbuttons.js');
 
     // Get options
     var options = opt_options || {};
@@ -56,16 +58,14 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
     }
 
     // Classes CSS
-    this.olClassName = 'ol-unselectable ol-control';
-    this.drawContainer = 'toggle-control';
-
-    this.drawClassName = this.olClassName + ' ' + this.drawContainer;
-
-    this.olGroupClassName = 'ol-control-group';
+    //this.olClassName = 'ol-unselectable ol-control';
+    //this.drawContainer = 'toggle-control';
+    //this.drawClassName = this.olClassName + ' ' + this.drawContainer;
+    //this.olGroupClassName = 'ol-control-group';
 
     // Boutons
-    var elementDrawButtons = new ol.Collection();
-    var elementDrawControls = new ol.Collection();
+    //var elementDrawButtons = new ol.Collection();
+    //var elementDrawControls = new ol.Collection();
 
     // Events listeners
     var handleButtonsClick = function (e)
@@ -197,131 +197,131 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
 
 
     // Marker
-    var buttonPoint = this.buttonPoint = document.createElement('button');
-    buttonPoint.setAttribute('title', 'Draw point');
-    buttonPoint.id = buttonPoint.draw = 'Point';
-    buttonPoint.type_control = 'draw';
-    buttonPoint.addEventListener('click', handleButtonsClick, false);
-    elementDrawButtons.push(buttonPoint);
+    //var buttonPoint = this.buttonPoint = document.createElement('button');
+    //buttonPoint.setAttribute('title', 'Draw point');
+    //buttonPoint.id = buttonPoint.draw = 'Point';
+    //buttonPoint.type_control = 'draw';
+    //buttonPoint.addEventListener('click', handleButtonsClick, false);
+    //elementDrawButtons.push(buttonPoint);
 
     // Line
-    var buttonLine = this.buttonLine = document.createElement('button');
-    buttonLine.setAttribute('title', 'Draw line');
-    buttonLine.id = buttonLine.draw = 'LineString';
-    buttonLine.type_control = 'draw';
-    buttonLine.addEventListener('click', handleButtonsClick, false);
-    elementDrawButtons.push(buttonLine);
+    //var buttonLine = this.buttonLine = document.createElement('button');
+    //buttonLine.setAttribute('title', 'Draw line');
+    //buttonLine.id = buttonLine.draw = 'LineString';
+    //buttonLine.type_control = 'draw';
+    //buttonLine.addEventListener('click', handleButtonsClick, false);
+    //elementDrawButtons.push(buttonLine);
 
     // Square
-    var buttonSquare = this.buttonCircle = document.createElement('button');
-    buttonSquare.setAttribute('title', 'Draw square');
-    buttonSquare.id = buttonSquare.draw = 'Square';
-    buttonSquare.type_control = 'draw';
-    buttonSquare.addEventListener('click', handleButtonsClick, false);
-    elementDrawButtons.push(buttonSquare);
+    //var buttonSquare = this.buttonCircle = document.createElement('button');
+    //buttonSquare.setAttribute('title', 'Draw square');
+    //buttonSquare.id = buttonSquare.draw = 'Square';
+    //buttonSquare.type_control = 'draw';
+    //buttonSquare.addEventListener('click', handleButtonsClick, false);
+    //elementDrawButtons.push(buttonSquare);
 
     // Circle
-    var buttonCircle = this.buttonCircle = document.createElement('button');
-    buttonCircle.setAttribute('title', 'Draw circle');
-    buttonCircle.id = buttonCircle.draw = 'Circle';
-    buttonCircle.type_control = 'draw';
-    buttonCircle.addEventListener('click', handleButtonsClick, false);
-    elementDrawButtons.push(buttonCircle);
+    //var buttonCircle = this.buttonCircle = document.createElement('button');
+    //buttonCircle.setAttribute('title', 'Draw circle');
+    //buttonCircle.id = buttonCircle.draw = 'Circle';
+    //buttonCircle.type_control = 'draw';
+    //buttonCircle.addEventListener('click', handleButtonsClick, false);
+    //elementDrawButtons.push(buttonCircle);
 
     // Polygone
-    var buttonPolygone = this.buttonPolygone = document.createElement('button');
-    buttonPolygone.setAttribute('title', 'Draw polygone');
-    buttonPolygone.id = buttonPolygone.draw = 'Polygon';
-    buttonPolygone.type_control = 'draw';
-    buttonPolygone.addEventListener('click', handleButtonsClick, false);
-    elementDrawButtons.push(buttonPolygone);
+    //var buttonPolygone = this.buttonPolygone = document.createElement('button');
+    //buttonPolygone.setAttribute('title', 'Draw polygone');
+    //buttonPolygone.id = buttonPolygone.draw = 'Polygon';
+    //buttonPolygone.type_control = 'draw';
+    //buttonPolygone.addEventListener('click', handleButtonsClick, false);
+    //elementDrawButtons.push(buttonPolygone);
 
     // Record add items
-    var buttonDrawEnd = this.buttonDrawEnd = document.createElement('button');
-    buttonDrawEnd.setAttribute('title', 'Ending draw mode');
-    buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
-    buttonDrawEnd.type_control = 'ending';
-    buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
-    buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
-    elementDrawButtons.push(buttonDrawEnd);
+    //var buttonDrawEnd = this.buttonDrawEnd = document.createElement('button');
+    //buttonDrawEnd.setAttribute('title', 'Ending draw mode');
+    //buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
+    //buttonDrawEnd.type_control = 'ending';
+    //buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
+    //buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
+    //elementDrawButtons.push(buttonDrawEnd);
 
     // Edit
-    var buttonEdit = this.buttonEdit = document.createElement('button');
-    buttonEdit.setAttribute('title', 'Edit feature');
-    buttonEdit.id = 'Edit';
-    buttonEdit.type_control = 'edit';
-    buttonEdit.addEventListener('click', handleControlsClick, false);
-    elementDrawControls.push(buttonEdit);
+    //var buttonEdit = this.buttonEdit = document.createElement('button');
+    //buttonEdit.setAttribute('title', 'Edit feature');
+    //buttonEdit.id = 'Edit';
+    //buttonEdit.type_control = 'edit';
+    //buttonEdit.addEventListener('click', handleControlsClick, false);
+    //elementDrawControls.push(buttonEdit);
 
     // Delete
-    var buttonDel = this.buttonEdit = document.createElement('button');
-    buttonDel.setAttribute('title', 'Delete feature');
-    buttonDel.id = 'Delete';
-    buttonDel.type_control = 'delete';
-    buttonDel.addEventListener('click', handleControlsClick, false);
-    elementDrawControls.push(buttonDel);
+    //var buttonDel = this.buttonEdit = document.createElement('button');
+    //buttonDel.setAttribute('title', 'Delete feature');
+    //buttonDel.id = 'Delete';
+    //buttonDel.type_control = 'delete';
+    //buttonDel.addEventListener('click', handleControlsClick, false);
+    //elementDrawControls.push(buttonDel);
 
-    var buttonControlEnd = this.buttonControlEnd = document.createElement('button');
-    buttonControlEnd.setAttribute('title', 'Ending control mode');
-    buttonControlEnd.id = 'Ending';
-    buttonControlEnd.type_control = 'ending';
-    buttonControlEnd.addEventListener('click', handleGroupEnd, false);
-    buttonControlEnd.removeEventListener('dblclick', handleGroupEnd);
-    elementDrawControls.push(buttonControlEnd);
+    //var buttonControlEnd = this.buttonControlEnd = document.createElement('button');
+    //buttonControlEnd.setAttribute('title', 'Ending control mode');
+    //buttonControlEnd.id = 'Ending';
+    //buttonControlEnd.type_control = 'ending';
+    //buttonControlEnd.addEventListener('click', handleGroupEnd, false);
+    //buttonControlEnd.removeEventListener('dblclick', handleGroupEnd);
+    //elementDrawControls.push(buttonControlEnd);
 
     // /!\ if you want to use glyphicon, you must have Bootstrap
-    if (options.style_buttons == "glyphicon") {
-        buttonPoint.className = 'glyphicon glyphicon-map-marker';
-        buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
-        buttonSquare.className = 'glyphicon icon-vector-path-square';
-        buttonCircle.className = 'glyphicon icon-vector-path-circle';
-        buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
-        buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
-
-        buttonEdit.className = 'glyphicon glyphicon-pencil';
-        buttonDel.className = 'glyphicon glyphicon-trash';
-        buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
-
-    } else {
-        buttonPoint.className = 'glyphicon-vector-path-point';
-        buttonLine.className = 'glyphicon-vector-path-line';
-        buttonSquare.className = 'glyphicon-vector-path-square';
-        buttonCircle.className = 'glyphicon-vector-path-circle';
-        buttonPolygone.className = 'glyphicon-vector-path-polygon';
-        buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
-
-        buttonEdit.className = 'glyphicon-vector-path-pencil';
-        buttonDel.className = 'glyphicon-vector-path-trash';
-        buttonControlEnd.className = 'glyphicon-vector-path-ok hidden';
-    }
+    //if (options.style_buttons == "glyphicon") {
+    //    buttonPoint.className = 'glyphicon glyphicon-map-marker';
+    //    buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
+    //    buttonSquare.className = 'glyphicon icon-vector-path-square';
+    //    buttonCircle.className = 'glyphicon icon-vector-path-circle';
+    //    buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
+    //    buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
+    //
+    //    buttonEdit.className = 'glyphicon glyphicon-pencil';
+    //    buttonDel.className = 'glyphicon glyphicon-trash';
+    //    buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
+    //
+    //} else {
+    //    buttonPoint.className = 'glyphicon-vector-path-point';
+    //    buttonLine.className = 'glyphicon-vector-path-line';
+    //    buttonSquare.className = 'glyphicon-vector-path-square';
+    //    buttonCircle.className = 'glyphicon-vector-path-circle';
+    //    buttonPolygone.className = 'glyphicon-vector-path-polygon';
+    //    buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
+    //
+    //    buttonEdit.className = 'glyphicon-vector-path-pencil';
+    //    buttonDel.className = 'glyphicon-vector-path-trash';
+    //    buttonControlEnd.className = 'glyphicon-vector-path-ok hidden';
+    //}
 
     // Containers
-    var divDraw = document.createElement('div');
-    divDraw.className = 'div-draw ' + this.olGroupClassName;
-    elementDrawButtons.forEach(function(button) {
-        button.removeEventListener("dblclick", handleButtonsClick);
-        if(options.draw[button.draw] == true) {
-            divDraw.appendChild(button);
-        }
-    });
+    //var divDraw = document.createElement('div');
+    //divDraw.className = 'div-draw ' + this.olGroupClassName;
+    //elementDrawButtons.forEach(function(button) {
+    //    button.removeEventListener("dblclick", handleButtonsClick);
+    //    if(options.draw[button.draw] == true) {
+    //        divDraw.appendChild(button);
+    //    }
+    //});
 
-    var divControls = document.createElement('div');
-    divControls.className = 'div-controls ' + this.olGroupClassName;
-    elementDrawControls.forEach(function(button) {
-        button.removeEventListener("dblclick", handleControlsClick);
-        divControls.appendChild(button);
-    });
+    //var divControls = document.createElement('div');
+    //divControls.className = 'div-controls ' + this.olGroupClassName;
+    //elementDrawControls.forEach(function(button) {
+    //    button.removeEventListener("dblclick", handleControlsClick);
+    //    divControls.appendChild(button);
+    //});
 
     // Container
-    var element = document.createElement('div');
-    element.className = this.drawClassName;
-    element.appendChild(divDraw);
-    element.appendChild(divControls);
+    //var element = document.createElement('div');
+    //element.className = this.drawClassName;
+    //element.appendChild(divDraw);
+    //element.appendChild(divControls);
 
     /**
      * TEST
      */
-     var elementTest = ol3buttons.initButtons(options.style_buttons);
+     var elementTest = new ol3buttons.init(opt_options);
     /**
      * FIN TEST
      */
@@ -332,13 +332,13 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
     });
 };
 
-ol.inherits(ol.control.DrawButtons, ol.control.Control);
+ol.inherits(ol.control.ControlDrawButtons, ol.control.Control);
 
 /**
  * Drawing on map
  * @param evt
  */
-ol.control.DrawButtons.prototype.drawOnMap = function(evt)
+ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
 {
     this.map = this.getMap();
 
@@ -378,7 +378,7 @@ ol.control.DrawButtons.prototype.drawOnMap = function(evt)
  * Event listener call when a new feature is created
  * @param evt
  */
-ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
+ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
 {
     var feature = evt.feature;
     var parser = new ol.format.GeoJSON();
@@ -398,7 +398,7 @@ ol.control.DrawButtons.prototype.drawEndFeature = function(evt)
  * Record features in local storage
  * /!\ circles can't ge parsing in GeoJSON : https://github.com/openlayers/ol3/pull/3434
  */
-ol.control.DrawButtons.prototype.setFeaturesInLocalStorage = function()
+ol.control.ControlDrawButtons.prototype.setFeaturesInLocalStorage = function()
 {
     var features = this.getSelectedLayer().getSource().getFeatures();
     var parser = new ol.format.GeoJSON();
@@ -417,7 +417,7 @@ ol.control.DrawButtons.prototype.setFeaturesInLocalStorage = function()
  * Edit or delete a feature
  * @param evt
  */
-ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
+ol.control.ControlDrawButtons.prototype.controlEditOnMap = function(evt) {
     if (!this.getSelectedLayer()) {
         this.setFlagDraw(false)
     } else {
@@ -460,7 +460,7 @@ ol.control.DrawButtons.prototype.controlEditOnMap = function(evt) {
  * Delete a feature from map
  * @param evt
  */
-ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
+ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
 {
     if (!this.getSelectedLayer()) {
         this.setFlagDraw(false)
@@ -519,7 +519,7 @@ ol.control.DrawButtons.prototype.controlDelOnMap = function (evt)
 /**
  * Styles of selected layer
  */
-ol.control.DrawButtons.prototype.styleAdd = function()
+ol.control.ControlDrawButtons.prototype.styleAdd = function()
 {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
@@ -545,7 +545,7 @@ ol.control.DrawButtons.prototype.styleAdd = function()
     return style;
 };
 
-ol.control.DrawButtons.prototype.styleEdit = function()
+ol.control.ControlDrawButtons.prototype.styleEdit = function()
 {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
@@ -575,12 +575,12 @@ ol.control.DrawButtons.prototype.styleEdit = function()
  * Getters/setters of selected layer : Set your layer according to your need :)
  * @param layer
  */
-ol.control.DrawButtons.prototype.setSelectedLayer = function(layer)
+ol.control.ControlDrawButtons.prototype.setSelectedLayer = function(layer)
 {
     this.selectedLayers = layer;
 };
 
-ol.control.DrawButtons.prototype.getSelectedLayer = function()
+ol.control.ControlDrawButtons.prototype.getSelectedLayer = function()
 {
     return this.selectedLayers;
 };
@@ -589,12 +589,12 @@ ol.control.DrawButtons.prototype.getSelectedLayer = function()
  * Add a flag if Mode draw or not
  * @param flagDraw
  */
-ol.control.DrawButtons.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
+ol.control.ControlDrawButtons.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
 {
     this.flagDraw = flagDraw;
 };
 
-ol.control.DrawButtons.prototype.getFlagDraw = function()
+ol.control.ControlDrawButtons.prototype.getFlagDraw = function()
 {
     return this.flagDraw;
 };
@@ -603,12 +603,12 @@ ol.control.DrawButtons.prototype.getFlagDraw = function()
  * Flag for local storage
  * @param locStor
  */
-ol.control.DrawButtons.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
+ol.control.ControlDrawButtons.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
 {
     this.flagLocStor = locStor;
 };
 
-ol.control.DrawButtons.prototype.getFlagLocStor = function()
+ol.control.ControlDrawButtons.prototype.getFlagLocStor = function()
 {
     return this.flagLocStor;
 };

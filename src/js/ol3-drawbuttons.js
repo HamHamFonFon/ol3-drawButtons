@@ -1,28 +1,46 @@
+var ol3buttons = ol3buttons || {};
+
 var ol3buttons = {
 
-    initButtons: function (styleOptions)
+    tabOptions: {},
+    olClassName: 'ol-unselectable ol-control',
+    drawContainer: 'toggle-control',
+    olGroupClassName: 'ol-control-group',
+
+    init: function (tabOptions)
     {
-        return ol3buttons.container(styleOptions);
+        var this_ = this;
+        this.options = tabOptions;
+
+        // Classes CSS
+        this.olClassName = ol3buttons.olClassName;
+        this.drawContainer = ol3buttons.drawContainer;
+        this.olGroupClassName = ol3buttons.olGroupClassName;
+
+        this.drawClassName = this.olClassName + ' ' + this.drawContainer;
+
+        return ol3buttons.elContainer();
     },
 
     /**
      * Create container
      */
-    container: function (styleOptions)
+    elContainer: function ()
     {
+        var this_ = this;
         // Containers
-        var elementDrawButtons = ol3buttons.drawButtons();
+        var elementDrawButtons = this.drawButtons();
         var divDraw = document.createElement('div');
         divDraw.className = 'div-draw ' + this.olGroupClassName;
 
         elementDrawButtons.forEach(function(button) {
             //button.removeEventListener("dblclick", handleButtonsClick);
-            if(options.draw[button.draw] == true) {
+            if(this_.options.draw[button.draw] == true) {
                 divDraw.appendChild(button);
             }
         });
 
-        var elementDrawControls = ol3buttons.drawControls();
+        var elementDrawControls = this.drawControls();
         var divControls = document.createElement('div');
         divControls.className = 'div-controls ' + this.olGroupClassName;
         elementDrawControls.forEach(function(button) {
@@ -95,6 +113,23 @@ var ol3buttons = {
         //buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
         elementDrawButtons.push(buttonDrawEnd);
 
+
+        //if (this.options.style_buttons == "glyphicon") {
+        //    buttonPoint.className = 'glyphicon glyphicon-map-marker';
+        //    buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
+        //    buttonSquare.className = 'glyphicon icon-vector-path-square';
+        //    buttonCircle.className = 'glyphicon icon-vector-path-circle';
+        //    buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
+        //    buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
+        //} else {
+        //    buttonPoint.className = 'glyphicon-vector-path-point';
+        //    buttonLine.className = 'glyphicon-vector-path-line';
+        //    buttonSquare.className = 'glyphicon-vector-path-square';
+        //    buttonCircle.className = 'glyphicon-vector-path-circle';
+        //    buttonPolygone.className = 'glyphicon-vector-path-polygon';
+        //    buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
+        //}
+
         return elementDrawButtons;
     },
 
@@ -127,6 +162,18 @@ var ol3buttons = {
         //buttonControlEnd.addEventListener('click', handleGroupEnd, false);
         //buttonControlEnd.removeEventListener('dblclick', handleGroupEnd);
         elementDrawControls.push(buttonControlEnd);
+
+
+        if (this.options.style_buttons == "glyphicon") {
+            buttonEdit.className = 'glyphicon glyphicon-pencil';
+            buttonDel.className = 'glyphicon glyphicon-trash';
+            buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
+
+        } else {
+            buttonEdit.className = 'glyphicon-vector-path-pencil';
+            buttonDel.className = 'glyphicon-vector-path-trash';
+            buttonControlEnd.className = 'glyphicon-vector-path-ok hidden';
+        }
 
         return elementDrawControls;
     }
