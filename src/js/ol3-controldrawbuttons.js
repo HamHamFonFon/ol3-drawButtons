@@ -7,7 +7,8 @@
  *
  * Minify : wget --post-data="input=`cat ol3-drawbuttons.js`" --output-document=ol3-drawbuttons.min.js https://javascript-minifier.com/raw
  */
-ol.control.DrawButtons = function (selected_layer, opt_options) {
+//require('ol3-drawbuttons.js');
+ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
 
     // Get options
     var options = opt_options || {};
@@ -194,6 +195,7 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     };
 
 
+
     // Marker
     var buttonPoint = this.buttonPoint = document.createElement('button');
     buttonPoint.setAttribute('title', 'Draw point');
@@ -316,8 +318,16 @@ ol.control.DrawButtons = function (selected_layer, opt_options) {
     element.appendChild(divDraw);
     element.appendChild(divControls);
 
+    /**
+     * TEST
+     */
+     var elementTest = ol3buttons.initButtons(options.style_buttons);
+    /**
+     * FIN TEST
+     */
+
     ol.control.Control.call(this, {
-        element: element,
+        element: elementTest, //element,
         target: options.target
     });
 };
