@@ -27,7 +27,7 @@ This exemple is showing how to use the plugin
 
   - [Use Locale Storage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/Use-localStorage/examples/local_storage.html) : use localStorage to store features
 
-  - [Test with separate scripts](https://github.com/HamHamFonFon/ol3-drawButtons/blob/separation-front-treatment/examples/separation_test.html)
+  - [Test with separate scripts](https://rawgit.com/HamHamFonFon/ol3-drawButtons/separation-front-treatment/examples/separation_test.html)
 
 API
 -------------
