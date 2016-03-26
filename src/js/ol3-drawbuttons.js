@@ -6,20 +6,29 @@ var ol3buttons = {
     olClassName: 'ol-unselectable ol-control',
     drawContainer: 'toggle-control',
     olGroupClassName: 'ol-control-group',
+    handleButtonsClick: null,
+    handleControlsClick: null,
+    handleGroupEnd: null,
 
-    init: function (tabOptions)
+    init: function (tabOptions, handleButtonsClick, handleControlsClick, handleGroupEnd)
     {
         var this_ = this;
-        this.options = tabOptions;
+        this.tabOptions = ol3buttons.tabOptions = tabOptions;
 
         // Classes CSS
         this.olClassName = ol3buttons.olClassName;
         this.drawContainer = ol3buttons.drawContainer;
         this.olGroupClassName = ol3buttons.olGroupClassName;
-
         this.drawClassName = this.olClassName + ' ' + this.drawContainer;
 
-        return ol3buttons.elContainer();
+        // Callback TEST
+        this.handleButtonsClick = ol3buttons.handleButtonsClick = handleButtonsClick;
+        this.handleControlsClick = ol3buttons.handleControlsClick = handleControlsClick;
+        this.handleGroupEnd = ol3buttons.handleGroupEnd = handleGroupEnd;
+
+        var container = ol3buttons.elContainer();
+        container.className = this.drawClassName;
+        return container;
     },
 
     /**
@@ -34,8 +43,8 @@ var ol3buttons = {
         divDraw.className = 'div-draw ' + this.olGroupClassName;
 
         elementDrawButtons.forEach(function(button) {
-            //button.removeEventListener("dblclick", handleButtonsClick);
-            if(this_.options.draw[button.draw] == true) {
+            button.removeEventListener("dblclick", this.handleButtonsClick);
+            if(this_.tabOptions.draw[button.draw] == true) {
                 divDraw.appendChild(button);
             }
         });
@@ -44,13 +53,12 @@ var ol3buttons = {
         var divControls = document.createElement('div');
         divControls.className = 'div-controls ' + this.olGroupClassName;
         elementDrawControls.forEach(function(button) {
-            //button.removeEventListener("dblclick", handleControlsClick);
+            button.removeEventListener("dblclick", this.handleControlsClick);
             divControls.appendChild(button);
         });
 
         // Container
         var elementContainer = document.createElement('div');
-        elementContainer.className = this.drawClassName;
         elementContainer.appendChild(divDraw);
         elementContainer.appendChild(divControls);
 
@@ -69,7 +77,7 @@ var ol3buttons = {
         buttonPoint.setAttribute('title', 'Draw point');
         buttonPoint.id = buttonPoint.draw = 'Point';
         buttonPoint.type_control = 'draw';
-        //buttonPoint.addEventListener('click', handleButtonsClick, false);
+        buttonPoint.addEventListener('click', this.handleButtonsClick, false);
         elementDrawButtons.push(buttonPoint);
 
         // Line
@@ -77,7 +85,7 @@ var ol3buttons = {
         buttonLine.setAttribute('title', 'Draw line');
         buttonLine.id = buttonLine.draw = 'LineString';
         buttonLine.type_control = 'draw';
-        //buttonLine.addEventListener('click', handleButtonsClick, false);
+        buttonLine.addEventListener('click', this.handleButtonsClick, false);
         elementDrawButtons.push(buttonLine);
 
         // Square
@@ -85,7 +93,7 @@ var ol3buttons = {
         buttonSquare.setAttribute('title', 'Draw square');
         buttonSquare.id = buttonSquare.draw = 'Square';
         buttonSquare.type_control = 'draw';
-        //buttonSquare.addEventListener('click', handleButtonsClick, false);
+        buttonSquare.addEventListener('click', this.handleButtonsClick, false);
         elementDrawButtons.push(buttonSquare);
 
         // Circle
@@ -93,7 +101,7 @@ var ol3buttons = {
         buttonCircle.setAttribute('title', 'Draw circle');
         buttonCircle.id = buttonCircle.draw = 'Circle';
         buttonCircle.type_control = 'draw';
-        //buttonCircle.addEventListener('click', handleButtonsClick, false);
+        buttonCircle.addEventListener('click', this.handleButtonsClick, false);
         elementDrawButtons.push(buttonCircle);
 
         // Polygone
@@ -101,7 +109,7 @@ var ol3buttons = {
         buttonPolygone.setAttribute('title', 'Draw polygone');
         buttonPolygone.id = buttonPolygone.draw = 'Polygon';
         buttonPolygone.type_control = 'draw';
-        //buttonPolygone.addEventListener('click', handleButtonsClick, false);
+        buttonPolygone.addEventListener('click', this.handleButtonsClick, false);
         elementDrawButtons.push(buttonPolygone);
 
         // Record add items
@@ -109,26 +117,26 @@ var ol3buttons = {
         buttonDrawEnd.setAttribute('title', 'Ending draw mode');
         buttonDrawEnd.id = buttonDrawEnd.draw = 'Ending';
         buttonDrawEnd.type_control = 'ending';
-        //buttonDrawEnd.addEventListener('click', handleGroupEnd, false);
-        //buttonDrawEnd.removeEventListener('dblclick', handleGroupEnd);
+        buttonDrawEnd.addEventListener('click', this.handleGroupEnd, false);
+        buttonDrawEnd.removeEventListener('dblclick', this.handleGroupEnd);
         elementDrawButtons.push(buttonDrawEnd);
 
 
-        //if (this.options.style_buttons == "glyphicon") {
-        //    buttonPoint.className = 'glyphicon glyphicon-map-marker';
-        //    buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
-        //    buttonSquare.className = 'glyphicon icon-vector-path-square';
-        //    buttonCircle.className = 'glyphicon icon-vector-path-circle';
-        //    buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
-        //    buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
-        //} else {
-        //    buttonPoint.className = 'glyphicon-vector-path-point';
-        //    buttonLine.className = 'glyphicon-vector-path-line';
-        //    buttonSquare.className = 'glyphicon-vector-path-square';
-        //    buttonCircle.className = 'glyphicon-vector-path-circle';
-        //    buttonPolygone.className = 'glyphicon-vector-path-polygon';
-        //    buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
-        //}
+        if (this.tabOptions.style_buttons == "glyphicon") {
+            buttonPoint.className = 'glyphicon glyphicon-map-marker';
+            buttonLine.className = 'glyphicon icon-large icon-vector-path-line';
+            buttonSquare.className = 'glyphicon icon-vector-path-square';
+            buttonCircle.className = 'glyphicon icon-vector-path-circle';
+            buttonPolygone.className = 'glyphicon icon-vector-path-polygon';
+            buttonDrawEnd.className = 'glyphicon glyphicon-ok hidden';
+        } else {
+            buttonPoint.className = 'glyphicon-vector-path-point';
+            buttonLine.className = 'glyphicon-vector-path-line';
+            buttonSquare.className = 'glyphicon-vector-path-square';
+            buttonCircle.className = 'glyphicon-vector-path-circle';
+            buttonPolygone.className = 'glyphicon-vector-path-polygon';
+            buttonDrawEnd.className = 'glyphicon-vector-path-ok hidden';
+        }
 
         return elementDrawButtons;
     },
@@ -144,7 +152,7 @@ var ol3buttons = {
         buttonEdit.setAttribute('title', 'Edit feature');
         buttonEdit.id = 'Edit';
         buttonEdit.type_control = 'edit';
-        //buttonEdit.addEventListener('click', handleControlsClick, false);
+        buttonEdit.addEventListener('click', this.handleControlsClick, false);
         elementDrawControls.push(buttonEdit);
 
         // Delete
@@ -152,19 +160,18 @@ var ol3buttons = {
         buttonDel.setAttribute('title', 'Delete feature');
         buttonDel.id = 'Delete';
         buttonDel.type_control = 'delete';
-        //buttonDel.addEventListener('click', handleControlsClick, false);
+        buttonDel.addEventListener('click', this.handleControlsClick, false);
         elementDrawControls.push(buttonDel);
 
         var buttonControlEnd = this.buttonControlEnd = document.createElement('button');
         buttonControlEnd.setAttribute('title', 'Ending control mode');
         buttonControlEnd.id = 'Ending';
         buttonControlEnd.type_control = 'ending';
-        //buttonControlEnd.addEventListener('click', handleGroupEnd, false);
-        //buttonControlEnd.removeEventListener('dblclick', handleGroupEnd);
+        buttonControlEnd.addEventListener('click', this.handleGroupEnd, false);
+        buttonControlEnd.removeEventListener('dblclick', this.handleGroupEnd);
         elementDrawControls.push(buttonControlEnd);
 
-
-        if (this.options.style_buttons == "glyphicon") {
+        if (this.tabOptions.style_buttons == "glyphicon") {
             buttonEdit.className = 'glyphicon glyphicon-pencil';
             buttonDel.className = 'glyphicon glyphicon-trash';
             buttonControlEnd.className = 'glyphicon glyphicon-ok hidden';
