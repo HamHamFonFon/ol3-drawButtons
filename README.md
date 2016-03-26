@@ -6,7 +6,7 @@ Welcome !! DrawButtons is an OpenLayers 3 plugin for drawing new features, edit 
 Plugin Status
 -------------
 Is currently in Beta stage of development.
-v. 0.3.2
+v. 0.4.3
 
 Requirements
 -------------
@@ -27,10 +27,12 @@ This exemple is showing how to use the plugin
 
   - [Use Locale Storage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/Use-localStorage/examples/local_storage.html) : use localStorage to store features
 
+  - [Test with separate scripts](https://github.com/HamHamFonFon/ol3-drawButtons/blob/separation-front-treatment/examples/separation_test.html)
+
 API
 -------------
 
-### `new ol.control.DrawButtons(vector_layer, opt_options)`
+### `new ol.control.ControlDrawButtons(vector_layer, opt_options)`
 
 #### vector_layer
 Layer you will adding, edit or delete features
@@ -85,7 +87,7 @@ var optionsControlDraw = {
         "Polygon": true
     }
 };
-var buttonsDrawControls = new ol.control.DrawButtons(myVectorLayer, optionsControlDraw);
+var buttonsDrawControls = new ol.control.ControlDrawButtons(myVectorLayer, optionsControlDraw);
 ```
 
 #### Extends
