@@ -62,7 +62,7 @@
             "Polygon": true
         }
     };
-    var buttonsDrawControls = new ol.control.DrawButtons(vector_draw, options);
+    var buttonsDrawControls = new ol.control.ControlDrawButtons(vector_draw, options);
     map.addControl(buttonsDrawControls);
 
 })();
