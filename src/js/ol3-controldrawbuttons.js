@@ -250,6 +250,8 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
         // Addind feature to source vector
         console.log("Add feature : " + feature.getGeometry().getCoordinates());
         var featureGeoJSON = parser.writeFeatureObject(feature);
+
+        // Todo add geom in formulary
     }
 };
 
