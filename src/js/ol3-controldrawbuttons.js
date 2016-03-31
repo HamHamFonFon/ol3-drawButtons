@@ -243,13 +243,12 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
     var feature = evt.feature;
     var parser = new ol.format.GeoJSON();
 
-    // Addind feature to source vector
-    console.log("Add feature : " + feature.getGeometry().getCoordinates());
-
     // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
-    if ('Circle' == feature.type) {
+    if ('Circle' == feature.getGeometry().getType()) {
         //var parserCircle = parser.writeCircleGeometry_()
     } else {
+        // Addind feature to source vector
+        console.log("Add feature : " + feature.getGeometry().getCoordinates());
         var featureGeoJSON = parser.writeFeatureObject(feature);
     }
 };
