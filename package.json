@@ -1,6 +1,6 @@
 {
   "name": "ol3-drawButtons",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description" : "Adding, edit, delete features with OpenLayers 3 controls",
   "repository": {
     "type": "git",

@@ -6,7 +6,7 @@ Welcome !! DrawButtons is an OpenLayers 3 plugin for drawing new features, edit 
 Plugin Status
 -------------
 Is currently in Beta stage of development.
-v. 0.4.3
+v. 0.4.4
 
 Requirements
 -------------
