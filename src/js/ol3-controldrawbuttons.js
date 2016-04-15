@@ -1,3 +1,4 @@
+//import ol from 'openlayers';
 /**
  * OpenLayers 3 Draw Control
  * @param ol.Vector.Layer selected_layer : layer
@@ -21,6 +22,12 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
     this.flagDraw = new Boolean(false);
     this.flagLocStor = new Boolean(false);
 
+    //
+    if (undefined != options.properties)
+    {
+        this.element = options.properties.element;
+    }
+
     this.setFlagDraw(this.flagDraw);
     this.setFlagLocStor(this.flagLocStor);
 
@@ -34,6 +41,7 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
         if (localStorage.getItem('features') !== null) {
 
             // Create geojson features from local storage
+            console.log(localStorage.getItem('features'))
             var featuresLS = new ol.format.GeoJSON().readFeatures(JSON.parse(localStorage.getItem('features')));
 
             var sourceLS =  new ol.source.Vector({
@@ -248,7 +256,10 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
         console.log("Add feature : " + feature.getGeometry().getCoordinates());
         var featureGeoJSON = parser.writeFeatureObject(feature);
 
-        // Todo add geom in formulary
+        if (undefined != this.element) {
+            var properties = feature.getProperties();
+            this.element.appendChild(this.formulary(properties));
+        }
     }
 };
 
@@ -375,6 +386,17 @@ ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
 };
 
 /**
+ * Formulary to adding or edit properties
+ */
+ol.control.ControlDrawButtons.prototype.formulary = function(properties)
+{
+    var form = document.createElement('form');
+
+    return form;
+};
+
+
+/**
  * Styles of selected layer
  */
 ol.control.ControlDrawButtons.prototype.styleAdd = function()
@@ -471,6 +493,7 @@ ol.control.ControlDrawButtons.prototype.getFlagLocStor = function()
     return this.flagLocStor;
 };
 
+
 /**
  *
  * @type {{tabOptions: {}, olClassName: string, drawContainer: string, olGroupClassName: string, handleButtonsClick: null, handleControlsClick: null, handleGroupEnd: null, init: ol3buttons.init, elContainer: ol3buttons.elContainer, drawButtons: ol3buttons.drawButtons, drawControls: ol3buttons.drawControls}}
@@ -518,7 +541,7 @@ var ol3buttons = {
         divDraw.className = 'div-draw ' + this.olGroupClassName;
 
         elementDrawButtons.forEach(function(button) {
-            button.removeEventListener("dblclick", this.handleButtonsClick);
+            button.removeEventListener("dblclick", this_.handleButtonsClick);
             if(this_.tabOptions.draw[button.draw] == true) {
                 divDraw.appendChild(button);
             }
@@ -528,7 +551,7 @@ var ol3buttons = {
         var divControls = document.createElement('div');
         divControls.className = 'div-controls ' + this.olGroupClassName;
         elementDrawControls.forEach(function(button) {
-            button.removeEventListener("dblclick", this.handleControlsClick);
+            button.removeEventListener("dblclick", this_.handleControlsClick);
             divControls.appendChild(button);
         });
 
