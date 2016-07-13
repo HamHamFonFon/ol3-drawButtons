@@ -35,11 +35,10 @@
 
     // OpenStreetMap layer
     var base_layer = new ol.layer.Tile({
-            title: 'Satellite',
-            type: 'base',
-            source: new ol.source.MapQuest(
-                {layer: 'sat'}
-            )
+            title : 'Open Street Map',
+            visible : true,
+            type: 'overlays',
+            source: new ol.source.OSM()
         }
     );
 
