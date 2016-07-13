@@ -205,7 +205,7 @@ ol.inherits(ol.control.ControlDrawButtons, ol.control.Control);
 ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
 {
     this.map = this.getMap();
-
+    var this_ = this;
     if (!this.getSelectedLayer()) {
         this.setFlagDraw(false);
     } else {
