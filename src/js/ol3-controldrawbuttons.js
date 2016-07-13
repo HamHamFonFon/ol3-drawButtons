@@ -223,22 +223,22 @@ ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
         }
 
         // Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
-        this.tmpVectorSource = new ol.source.Vector();
-        this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
+        //this.tmpVectorSource = new ol.source.Vector();
+        //this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
 
         // Draw new item
         var draw = this.drawInteraction = new ol.interaction.Draw({
             //features: features,
-            source : this.tmpVectorSource, //this.getSelectedLayer().getSource(),
+            source : this.getSelectedLayer().getSource(),
             features : new ol.Collection(),
             type: /** @type {ol.geom.GeometryType} */ (typeSelect),
             geometryFunction : geometryFctDraw,
             style : this.styleAdd()
         });
 
-        this.drawInteraction.on('drawstart', function() {
-            this_.tmpVectorSource.clear();
-        }, this);
+        //this.drawInteraction.on('drawstart', function() {
+        //    this_.tmpVectorSource.clear();
+        //}, this);
         this.drawInteraction.on('drawend', this.drawEndFeature, this);
         this.map.addInteraction(this.drawInteraction);
     }
@@ -258,13 +258,11 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
         //var parserCircle = parser.writeCircleGeometry_()
     } else {
         // Addind feature to source vector
-        console.log("Add feature : " + feature.getGeometry().getCoordinates());
         var featureGeoJSON = parser.writeFeatureObject(feature);
 
-        if (undefined != this.element) {
-            var properties = feature.getProperties();
-            this.element.appendChild(this.formulary(properties));
-        }
+        /**
+         * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search...)
+         */
     }
 };
 
@@ -280,8 +278,6 @@ ol.control.ControlDrawButtons.prototype.setFeaturesInLocalStorage = function()
     if (features.length > 0) {
         var featuresGeoJson = parser.writeFeatures(features)
         localStorage.clear();
-        console.log('Number of feature : ' + features.length);
-        console.log(featuresGeoJson);
         localStorage.setItem('features', JSON.stringify(featuresGeoJson));
     }
 }
@@ -339,7 +335,7 @@ ol.control.ControlDrawButtons.prototype.editEndFeature = function(evt)
             //var parserCircle = parser.writeCircleGeometry_()
         } else {
             // Edit document in Kuzzle
-            dataLayers.updateGeodatasDocument(feature);
+            // TODO
         }
     });
 };
