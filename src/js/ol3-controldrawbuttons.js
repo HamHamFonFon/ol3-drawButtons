@@ -222,7 +222,9 @@ ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
             geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
         }
 
-        // Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
+        // Koding challenge Kuzzle : Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
+        // Do not use the this.getSelectedLayer(), use an temporarly vector layer, data will be adding in kuzzle
+        // and in kuzzle-sdk, add new features to layer
         //this.tmpVectorSource = new ol.source.Vector();
         //this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
 
@@ -261,7 +263,8 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
         var featureGeoJSON = parser.writeFeatureObject(feature);
 
         /**
-         * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search...)
+         * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
+         * And add to layer
          */
     }
 };
