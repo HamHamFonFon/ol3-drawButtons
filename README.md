@@ -59,7 +59,6 @@ var vector_draw = new ol.layer.Vector({
 
 |Option name|Type|Description|
  ----------------- | ---------------------------- | ------------------
-| `popup_form`    |`Boolean`| (not implemented yet) |
 | `style_buttons` |`String`| Use bootstrap glyphicon or default CSS. Values : `glyphicon|default`|
 | `local_storage` |`Boolean`| (in progress) Possibility to record Layer in Local Storage
 | `draw`          |`Array`| Select buttons to show|
@@ -74,7 +73,6 @@ var vector_draw = new ol.layer.Vector({
 
 ```javascript
 var optionsControlDraw = {
-    "popup_form" : false,
     "style_buttons" : (undefined !== typeof style_buttons)? "glyphicon" : "default",
     "local_storage": true,
     "draw": {
@@ -99,12 +97,7 @@ Set a layer who may be different tha the one in options array
 ```javascript
 buttonsDrawControls.setSelectedLayer(otherVectorLayer);
 ```
-
-TODO and In progress
--------------
-  - Add popin for adding properties to new feature
-  - Add plugins for record in databases
-   
+  
 Author(s)
 -------------
 Stéphane MÉAUDRE
