@@ -6,7 +6,6 @@
  * @constructor
  * @extends ol.control.Control
  *
- * Minify : wget --post-data="input=`cat ol3-drawbuttons.js`" --output-document=ol3-drawbuttons.min.js https://javascript-minifier.com/raw
  */
 ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
 
@@ -22,7 +21,6 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
     this.flagDraw = new Boolean(false);
     this.flagLocStor = new Boolean(false);
 
-    //
     if (undefined != options.properties)
     {
         this.element = options.properties.element;
@@ -152,33 +150,34 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
         }
 
         // Removing adding interaction
-        if (undefined != this_.drawInteraction && this_.drawInteraction.getActive() == true) {
-            this_.drawInteraction.setActive(false);
+        if (undefined != this_.drawInteraction /*&& this_.drawInteraction.getActive() == true*/) {
+            //this_.drawInteraction.setActive(false);
             this_.map.removeInteraction(this_.drawInteraction);
+            this_.drawInteraction = null;
         }
 
-        // Remove modify interaction
-        if (undefined != this_.editSelectInteraction && this_.editSelectInteraction.getActive() == true) {
-            this_.editSelectInteraction.setActive(false);
+        // Remove selection interaction and modify interaction
+        if (undefined != this_.editSelectInteraction /*&& this_.editSelectInteraction.getActive() == true*/) {
+            //this_.editSelectInteraction.setActive(false);
             this_.map.removeInteraction(this_.editSelectInteraction);
+            this_.editSelectInteraction = null;
         }
-        if (undefined != this_.delInteraction && this_.delInteraction.getActive()) {
-            this_.delInteraction.setActive(false);
-            this_.map.removeInteraction(this_.delInteraction);
-        }
-        if (undefined != this_.modifyInteraction && this_.modifyInteraction.getActive() == true) {
-            this_.modifyInteraction.setActive(false);
+
+        if (undefined != this_.modifyInteraction /*&& this_.modifyInteraction.getActive() == true*/) {
+            //this_.modifyInteraction.setActive(false);
             this_.map.removeInteraction(this_.modifyInteraction);
+            this_.modifyInteraction = null;
         }
 
         // Remove delete interaction
-        if (undefined != this_.selectDelInteraction && this_.selectDelInteraction.getActive()) {
-            this_.selectDelInteraction.setActive(false);
+        if (undefined != this_.selectDelInteraction /*&& this_.selectDelInteraction.getActive()*/) {
+            //this_.selectDelInteraction.setActive(false);
             this_.map.removeInteraction(this_.selectDelInteraction);
         }
-        if (undefined != this_.delInteraction && this_.delInteraction.getActive()) {
-            this_.delInteraction.setActive(false);
+        if (undefined != this_.delInteraction /*&& this_.delInteraction.getActive()*/) {
+            //this_.delInteraction.setActive(false);
             this_.map.removeInteraction(this_.delInteraction);
+			this_.delInteraction = null;
         }
 
         if (true == this_.getFlagLocStor()) {
@@ -223,19 +222,25 @@ ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
             geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
         }
 
+        // Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
+        this.tmpVectorSource = new ol.source.Vector();
+        this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
+
         // Draw new item
         var draw = this.drawInteraction = new ol.interaction.Draw({
             //features: features,
-            source : this.getSelectedLayer().getSource(),
+            source : this.tmpVectorSource, //this.getSelectedLayer().getSource(),
             features : new ol.Collection(),
             type: /** @type {ol.geom.GeometryType} */ (typeSelect),
             geometryFunction : geometryFctDraw,
             style : this.styleAdd()
         });
 
-        draw.on('drawend', this.drawEndFeature, this);
-
-        this.map.addInteraction(draw);
+        this.drawInteraction.on('drawstart', function() {
+            this_.tmpVectorSource.clear();
+        }, this);
+        this.drawInteraction.on('drawend', this.drawEndFeature, this);
+        this.map.addInteraction(this.drawInteraction);
     }
 };
 
@@ -299,31 +304,46 @@ ol.control.ControlDrawButtons.prototype.controlEditOnMap = function(evt) {
         // Select Interaction
         var selectedLayer = this.getSelectedLayer();
         var editSelectInteraction = this.editSelectInteraction = new ol.interaction.Select({
-            condition: ol.events.condition.click,
+            condition: ol.events.condition.singleClick,
+            source : function(layer) {
+                if (layer == this.getSelectedLayer()) {
+                    return layer
+                }
+            }
         });
         this.map.addInteraction(editSelectInteraction);
-
-        // Gestion des event sur la feature
-        editSelectInteraction.getFeatures().addEventListener('add', function (e) {
-            var feature = e.element;
-            feature.addEventListener('change', function(e) {
-                console.log(feature.getGeometry());
-            });
-            console.log(feature.getGeometry());
-
-            // ---------------------------------------------- //
-            // Here, override for updating into your database //
-            // ---------------------------------------------- //
-        });
 
         // Modify interaction
         var mod = this.modifyInteraction = new ol.interaction.Modify({
             features: editSelectInteraction.getFeatures(),
-            style: this.styleEdit()
+            style: this.styleEdit(),
+            zIndex: 50
         });
+        mod.on('modifyend', this.editEndFeature, this);
+
         this.map.addInteraction(mod);
     }
 };
+
+/**geometryFctDraw
+ * @param evt
+ */
+ol.control.ControlDrawButtons.prototype.editEndFeature = function(evt)
+{
+    var features = evt.features.getArray();
+
+    // Dont use ES2015 syntax "array.forEach(feature => { return feature; })"
+    features.forEach(function(feature, index) {
+        // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
+        if ('Circle' == feature.getGeometry().getType()) {
+            //var parserCircle = parser.writeCircleGeometry_()
+        } else {
+            // Edit document in Kuzzle
+            dataLayers.updateGeodatasDocument(feature);
+        }
+    });
+};
+
 
 /**
  * Delete a feature from map
@@ -340,8 +360,6 @@ ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
     if (this.getFlagDraw() == true) {
         this.map = this.getMap();
 
-        // TODO : set specific style on hover
-
         // Select Interaction
         var selectDelInteraction = this.selectDelInteraction = new ol.interaction.Select({
             condition: ol.events.condition.click,
@@ -357,19 +375,19 @@ ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
         selectDelInteraction.getFeatures().addEventListener('add', function(e) {
             var feature = e.element;
             if(confirm('Are you sure you want to delete this feature ?')) {
-                try {
+                if (undefined != feature) {
                     // Remove from interaction
+                    var featureId = feature.getId();
                     selectDelInteraction.getFeatures().remove(feature);
-
-                    // remove from selected Layer
-                    this_.getSelectedLayer().getSource().removeFeature(feature);
-                } catch (e) {
-                    console.log(e.message);
-                }
-                // ---------------------------------------------- //
+                   
+				// ---------------------------------------------- //
                 // Here, override for deleting from your database //
                 // ---------------------------------------------- //
-            }
+
+                } else {
+                    
+                }
+                            }
             e.preventDefault();
         });
 
@@ -383,16 +401,6 @@ ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
         // add it to the map
         this.map.addInteraction(delInteraction);
     }
-};
-
-/**
- * Formulary to adding or edit properties
- */
-ol.control.ControlDrawButtons.prototype.formulary = function(properties)
-{
-    var form = document.createElement('form');
-
-    return form;
 };
 
 
@@ -663,7 +671,7 @@ var ol3buttons = {
 
         var buttonControlEnd = this.buttonControlEnd = document.createElement('button');
         buttonControlEnd.setAttribute('title', 'Ending control mode');
-        buttonControlEnd.id = 'Ending';
+        buttonControlEnd.id = 'EndingControl';
         buttonControlEnd.type_control = 'ending';
         buttonControlEnd.addEventListener('click', this.handleGroupEnd, false);
         buttonControlEnd.removeEventListener('dblclick', this.handleGroupEnd);
