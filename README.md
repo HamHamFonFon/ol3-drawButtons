@@ -15,7 +15,7 @@ Requirements
 
 Getting started
 -------------
-  - Clone the repository : `git clone git@github.com:HamHamFonFon/ol3-drawButtons.git ol3-drawButtons`
+  - Clone the repository : `git clone git@github.com:HamHamFonFon/ol3-drawFeatures.git ol3-drawFeatures`
   - Adding script JS and style CSS on your HTML code
 
 Demo examples
