@@ -1,7 +1,7 @@
-OpenLayers Drawing Plugin
+OpenLayers Drawing Features Plugin
 ===================
 
-Welcome !! DrawButtons is an OpenLayers 3 plugin for drawing new features, edit or delete feature from map. See [usage](https://rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/index.html) for demo.
+Welcome !! DrawFeatures is an OpenLayers 3 plugin for drawing new features, edit or delete feature from map. See [usage](https://rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/index.html) for demo.
 
 Plugin Status
 -------------
@@ -23,9 +23,9 @@ Demo examples
 
 This exemple is showing how to use the plugin
 	
-  - [Basic usage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
+  - [Basic usage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
-  - [Use Locale Storage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawButtons/master/examples/local_storage.html) : use localStorage to store features
+  - [Use Locale Storage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/local_storage.html) : use localStorage to store features
 
 API
 -------------
@@ -83,7 +83,7 @@ var optionsControlDraw = {
         "Polygon": true
     }
 };
-var buttonsDrawControls = new ol.control.ControlDrawButtons(myVectorLayer, optionsControlDraw);
+var buttonsDrawControls = new ol.control.ControlDrawFeatures(myVectorLayer, optionsControlDraw);
 ```
 
 #### Extends
