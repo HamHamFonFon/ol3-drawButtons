@@ -1,6 +1,6 @@
 {
   "name": "ol3-drawFeatures",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description" : "Adding, edit, delete features with OpenLayers 3 controls",
   "repository": {
     "type": "git",
