@@ -1,4 +1,4 @@
-//import ol from 'openlayers';
+
 /**
  * OpenLayers 3 Draw Control
  * @param ol.Vector.Layer selected_layer : layer
@@ -7,498 +7,512 @@
  * @extends ol.control.Control
  *
  */
-ol.control.ControlDrawFeatures = function (selected_layer, opt_options) {
 
-    // Get options
-    var options = opt_options || {};
-    options.draw.Ending = true;
-
-    // Set of defaultLayer
-    this.selectedLayers = selected_layer;
-    // Default values
-    this.typeSelect = 'Point';
-    this.map = this.getMap();
-    this.flagDraw = new Boolean(false);
-    this.flagLocStor = new Boolean(false);
-
-    if (undefined != options.properties)
-    {
-        this.element = options.properties.element;
-    }
-
-    this.setFlagDraw(this.flagDraw);
-    this.setFlagLocStor(this.flagLocStor);
-
-    var this_ = this;
-
-    // Set the selected layer : default layer or from localStorage
-    this.setFlagLocStor(false);
-    if (options.local_storage == true) {
-
-        this.setFlagLocStor(true);
-        if (localStorage.getItem('features') !== null) {
-
-            // Create geojson features from local storage
-            console.log(localStorage.getItem('features'))
-            var featuresLS = new ol.format.GeoJSON().readFeatures(JSON.parse(localStorage.getItem('features')));
-
-            var sourceLS =  new ol.source.Vector({
-                features: featuresLS
-            });
-            this.selectedLayers.setSource(sourceLS);
-        }
-    }
-
-    this.setSelectedLayer(this.selectedLayers);
-
-    if (options.style_buttons == undefined) {
-        options.style_buttons = "default";
-    }
-
-    // Not implemented yet
-    if (options.popup_form == true) {
-        this.popup = document.getElementById('popup');
-    }
-
-    // Events listeners
-    var handleButtonsClick = function (e)
-    {
-        e = e || window.event;
-
-        // Disabled Controls buttons
-        var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
-        for(var i = 0; i < divsChildren.length; i++) {
-            divsChildren.item(i).classList.remove('enable');
-            divsChildren.item(i).classList.remove('progress');
-            divsChildren.item(i).disabled = true;
-        }
-
-        // Disable Draws controls
-        var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
-        for(var i = 0; i < divsChildren.length; i++) {
-            divsChildren.item(i).classList.remove('enable');
-            divsChildren.item(i).classList.remove('progress');
-            divsChildren.item(i).disabled = true;
-
-            if (divsChildren.item(i).type_control == 'ending') {
-                divsChildren.item(i).classList.remove('hidden');
-                divsChildren.item(i).disabled = false;
-            }
-        }
-
-        // Enable the actual button
-        e.target.classList.toggle('progress');
-
-        this_.drawOnMap(e);
-        e.preventDefault();
-    };
-
-    // handling control mode
-    var handleControlsClick = function (e)
-    {
-        e = e || window.event;
-
-        // Disabled Controls buttons
-        var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
-        for(var i = 0; i < divsChildren.length; i++) {
-            divsChildren.item(i).classList.remove('enable');
-            divsChildren.item(i).classList.remove('progress');
-            divsChildren.item(i).disabled = true;
-
-            if (divsChildren.item(i).type_control == 'ending') {
-                divsChildren.item(i).classList.remove('hidden');
-                divsChildren.item(i).disabled = false;
-            }
-        }
-
-        // Disable Draws controls
-        var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
-        for(var i = 0; i < divsChildren.length; i++) {
-            divsChildren.item(i).classList.remove('enable');
-            divsChildren.item(i).classList.remove('progress');
-            divsChildren.item(i).disabled = true;
-        }
-
-        // Enable the actual button
-        e.target.classList.toggle('progress');
-
-        switch (e.target.type_control) {
-            case 'edit' :
-                this_.controlEditOnMap(e);
-                break;
-            case 'delete' :
-                this_.controlDelOnMap(e);
-                break;
-        }
-
-        e.preventDefault();
-    };
-
-
-    // Endind draw/control mode
-    var handleGroupEnd = function (e)
-    {
-        var divsChildren = this_.element.querySelectorAll('.div-controls button, .div-draw button');
-        for(var i = 0; i < divsChildren.length; i++) {
-            divsChildren.item(i).disabled = false;
-
-            if (divsChildren.item(i).type_control == 'ending') {
-                if (!divsChildren.item(i).classList.contains('hidden')) {
-                    divsChildren.item(i).classList.toggle('hidden');
-                }
-            }
-        }
-
-        // Removing adding interaction
-        if (undefined != this_.drawInteraction /*&& this_.drawInteraction.getActive() == true*/) {
-            //this_.drawInteraction.setActive(false);
-            this_.map.removeInteraction(this_.drawInteraction);
-            this_.drawInteraction = null;
-        }
-
-        // Remove selection interaction and modify interaction
-        if (undefined != this_.editSelectInteraction /*&& this_.editSelectInteraction.getActive() == true*/) {
-            //this_.editSelectInteraction.setActive(false);
-            this_.map.removeInteraction(this_.editSelectInteraction);
-            this_.editSelectInteraction = null;
-        }
-
-        if (undefined != this_.modifyInteraction /*&& this_.modifyInteraction.getActive() == true*/) {
-            //this_.modifyInteraction.setActive(false);
-            this_.map.removeInteraction(this_.modifyInteraction);
-            this_.modifyInteraction = null;
-        }
-
-        // Remove delete interaction
-        if (undefined != this_.selectDelInteraction /*&& this_.selectDelInteraction.getActive()*/) {
-            //this_.selectDelInteraction.setActive(false);
-            this_.map.removeInteraction(this_.selectDelInteraction);
-        }
-        if (undefined != this_.delInteraction /*&& this_.delInteraction.getActive()*/) {
-            //this_.delInteraction.setActive(false);
-            this_.map.removeInteraction(this_.delInteraction);
-			this_.delInteraction = null;
-        }
-
-        if (true == this_.getFlagLocStor()) {
-            this_.setFeaturesInLocalStorage();
-        }
-
-        this_.setFlagDraw(false); // Desactivation of drawing flag
-        e.preventDefault();
-    };
-
-    var buttonsContainer = new ol3buttons.init(opt_options, handleButtonsClick, handleControlsClick, handleGroupEnd);
-
-    ol.control.Control.call(this, {
-        element: buttonsContainer,
-        target: options.target
-    });
-};
-
-ol.inherits(ol.control.ControlDrawFeatures, ol.control.Control);
-
-/**
- * Drawing on map
- * @param evt
- */
-ol.control.ControlDrawFeatures.prototype.drawOnMap = function(evt)
-{
-    this.map = this.getMap();
-    var this_ = this;
-    if (!this.getSelectedLayer()) {
-        this.setFlagDraw(false);
+(function (root, factory) {
+    if(typeof define === "function" && define.amd) {
+        define(["openlayers"], factory);
+    } else if(typeof module === "object" && module.exports) {
+        module.exports = factory(require("openlayers"));
     } else {
-        this.setFlagDraw(true)
+        root.ControlDrawFeatures = factory(root.ol);
     }
+}(this, function(ol) {
 
-    if (this.getFlagDraw() == true) {
-        var geometryFctDraw;
-        var typeSelect = evt.target.draw;
+    ol.control.ControlDrawFeatures = function (selected_layer, opt_options) {
 
-        // Specific for square
-        if (typeSelect == 'Square') {
-            typeSelect = 'Circle';
-            geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
-        }
+        // Get options
+        var options = opt_options || {};
+        options.draw.Ending = true;
 
-        // Koding challenge Kuzzle : Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
-        // Do not use the this.getSelectedLayer(), use an temporarly vector layer, data will be adding in kuzzle
-        // and in kuzzle-sdk, add new features to layer
-        //this.tmpVectorSource = new ol.source.Vector();
-        //this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
-
-        // Draw new item
-        var draw = this.drawInteraction = new ol.interaction.Draw({
-            //features: features,
-            source : this.getSelectedLayer().getSource(),
-            features : new ol.Collection(),
-            type: /** @type {ol.geom.GeometryType} */ (typeSelect),
-            geometryFunction : geometryFctDraw,
-            style : this.styleAdd()
-        });
-
-        //this.drawInteraction.on('drawstart', function() {
-        //    this_.tmpVectorSource.clear();
-        //}, this);
-        this.drawInteraction.on('drawend', this.drawEndFeature, this);
-        this.map.addInteraction(this.drawInteraction);
-    }
-};
-
-/**
- * Event listener call when a new feature is created
- * @param evt
- */
-ol.control.ControlDrawFeatures.prototype.drawEndFeature = function(evt)
-{
-    var feature = evt.feature;
-    var parser = new ol.format.GeoJSON();
-
-    // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
-    if ('Circle' == feature.getGeometry().getType()) {
-        //var parserCircle = parser.writeCircleGeometry_()
-    } else {
-        // Addind feature to source vector
-        var featureGeoJSON = parser.writeFeatureObject(feature);
-
-        /**
-         * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
-         * And add to layer
-         */
-    }
-};
-
-/**
- * Record features in local storage
- * /!\ circles can't ge parsing in GeoJSON : https://github.com/openlayers/ol3/pull/3434
- */
-ol.control.ControlDrawFeatures.prototype.setFeaturesInLocalStorage = function()
-{
-    var features = this.getSelectedLayer().getSource().getFeatures();
-    var parser = new ol.format.GeoJSON();
-
-    if (features.length > 0) {
-        var featuresGeoJson = parser.writeFeatures(features)
-        localStorage.clear();
-        localStorage.setItem('features', JSON.stringify(featuresGeoJson));
-    }
-}
-
-
-/**
- * Edit or delete a feature
- * @param evt
- */
-ol.control.ControlDrawFeatures.prototype.controlEditOnMap = function(evt) {
-    if (!this.getSelectedLayer()) {
-        this.setFlagDraw(false)
-    } else {
-        this.setFlagDraw(true);
-    }
-
-    if (this.getFlagDraw() == true) {
+        // Set of defaultLayer
+        this.selectedLayers = selected_layer;
+        // Default values
+        this.typeSelect = 'Point';
         this.map = this.getMap();
+        this.flagDraw = new Boolean(false);
+        this.flagLocStor = new Boolean(false);
 
-        // Select Interaction
-        var selectedLayer = this.getSelectedLayer();
-        var editSelectInteraction = this.editSelectInteraction = new ol.interaction.Select({
-            condition: ol.events.condition.singleClick,
-            source : function(layer) {
-                if (layer == this.getSelectedLayer()) {
-                    return layer
+        if (undefined != options.properties)
+        {
+            this.element = options.properties.element;
+        }
+
+        this.setFlagDraw(this.flagDraw);
+        this.setFlagLocStor(this.flagLocStor);
+
+        var this_ = this;
+
+        // Set the selected layer : default layer or from localStorage
+        this.setFlagLocStor(false);
+        if (options.local_storage == true) {
+
+            this.setFlagLocStor(true);
+            if (localStorage.getItem('features') !== null) {
+
+                // Create geojson features from local storage
+                console.log(localStorage.getItem('features'))
+                var featuresLS = new ol.format.GeoJSON().readFeatures(JSON.parse(localStorage.getItem('features')));
+
+                var sourceLS =  new ol.source.Vector({
+                    features: featuresLS
+                });
+                this.selectedLayers.setSource(sourceLS);
+            }
+        }
+
+        this.setSelectedLayer(this.selectedLayers);
+
+        if (options.style_buttons == undefined) {
+            options.style_buttons = "default";
+        }
+
+        // Not implemented yet
+        if (options.popup_form == true) {
+            this.popup = document.getElementById('popup');
+        }
+
+        // Events listeners
+        var handleButtonsClick = function (e)
+        {
+            e = e || window.event;
+
+            // Disabled Controls buttons
+            var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
+            for(var i = 0; i < divsChildren.length; i++) {
+                divsChildren.item(i).classList.remove('enable');
+                divsChildren.item(i).classList.remove('progress');
+                divsChildren.item(i).disabled = true;
+            }
+
+            // Disable Draws controls
+            var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
+            for(var i = 0; i < divsChildren.length; i++) {
+                divsChildren.item(i).classList.remove('enable');
+                divsChildren.item(i).classList.remove('progress');
+                divsChildren.item(i).disabled = true;
+
+                if (divsChildren.item(i).type_control == 'ending') {
+                    divsChildren.item(i).classList.remove('hidden');
+                    divsChildren.item(i).disabled = false;
                 }
             }
+
+            // Enable the actual button
+            e.target.classList.toggle('progress');
+
+            this_.drawOnMap(e);
+            e.preventDefault();
+        };
+
+        // handling control mode
+        var handleControlsClick = function (e)
+        {
+            e = e || window.event;
+
+            // Disabled Controls buttons
+            var divsChildren = this_.element.getElementsByClassName('div-controls')[0].children;
+            for(var i = 0; i < divsChildren.length; i++) {
+                divsChildren.item(i).classList.remove('enable');
+                divsChildren.item(i).classList.remove('progress');
+                divsChildren.item(i).disabled = true;
+
+                if (divsChildren.item(i).type_control == 'ending') {
+                    divsChildren.item(i).classList.remove('hidden');
+                    divsChildren.item(i).disabled = false;
+                }
+            }
+
+            // Disable Draws controls
+            var divsChildren = this_.element.getElementsByClassName('div-draw')[0].children;
+            for(var i = 0; i < divsChildren.length; i++) {
+                divsChildren.item(i).classList.remove('enable');
+                divsChildren.item(i).classList.remove('progress');
+                divsChildren.item(i).disabled = true;
+            }
+
+            // Enable the actual button
+            e.target.classList.toggle('progress');
+
+            switch (e.target.type_control) {
+                case 'edit' :
+                    this_.controlEditOnMap(e);
+                    break;
+                case 'delete' :
+                    this_.controlDelOnMap(e);
+                    break;
+            }
+
+            e.preventDefault();
+        };
+
+
+        // Endind draw/control mode
+        var handleGroupEnd = function (e)
+        {
+            var divsChildren = this_.element.querySelectorAll('.div-controls button, .div-draw button');
+            for(var i = 0; i < divsChildren.length; i++) {
+                divsChildren.item(i).disabled = false;
+
+                if (divsChildren.item(i).type_control == 'ending') {
+                    if (!divsChildren.item(i).classList.contains('hidden')) {
+                        divsChildren.item(i).classList.toggle('hidden');
+                    }
+                }
+            }
+
+            // Removing adding interaction
+            if (undefined != this_.drawInteraction /*&& this_.drawInteraction.getActive() == true*/) {
+                //this_.drawInteraction.setActive(false);
+                this_.map.removeInteraction(this_.drawInteraction);
+                this_.drawInteraction = null;
+            }
+
+            // Remove selection interaction and modify interaction
+            if (undefined != this_.editSelectInteraction /*&& this_.editSelectInteraction.getActive() == true*/) {
+                //this_.editSelectInteraction.setActive(false);
+                this_.map.removeInteraction(this_.editSelectInteraction);
+                this_.editSelectInteraction = null;
+            }
+
+            if (undefined != this_.modifyInteraction /*&& this_.modifyInteraction.getActive() == true*/) {
+                //this_.modifyInteraction.setActive(false);
+                this_.map.removeInteraction(this_.modifyInteraction);
+                this_.modifyInteraction = null;
+            }
+
+            // Remove delete interaction
+            if (undefined != this_.selectDelInteraction /*&& this_.selectDelInteraction.getActive()*/) {
+                //this_.selectDelInteraction.setActive(false);
+                this_.map.removeInteraction(this_.selectDelInteraction);
+            }
+            if (undefined != this_.delInteraction /*&& this_.delInteraction.getActive()*/) {
+                //this_.delInteraction.setActive(false);
+                this_.map.removeInteraction(this_.delInteraction);
+                this_.delInteraction = null;
+            }
+
+            if (true == this_.getFlagLocStor()) {
+                this_.setFeaturesInLocalStorage();
+            }
+
+            this_.setFlagDraw(false); // Desactivation of drawing flag
+            e.preventDefault();
+        };
+
+        var buttonsContainer = new ol3buttons.init(opt_options, handleButtonsClick, handleControlsClick, handleGroupEnd);
+
+        ol.control.Control.call(this, {
+            element: buttonsContainer,
+            target: options.target
         });
-        this.map.addInteraction(editSelectInteraction);
+    };
 
-        // Modify interaction
-        var mod = this.modifyInteraction = new ol.interaction.Modify({
-            features: editSelectInteraction.getFeatures(),
-            style: this.styleEdit(),
-            zIndex: 50
-        });
-        mod.on('modifyend', this.editEndFeature, this);
+    ol.inherits(ol.control.ControlDrawFeatures, ol.control.Control);
 
-        this.map.addInteraction(mod);
-    }
-};
+    /**
+     * Drawing on map
+     * @param evt
+     */
+    ol.control.ControlDrawFeatures.prototype.drawOnMap = function(evt)
+    {
+        this.map = this.getMap();
+        var this_ = this;
+        if (!this.getSelectedLayer()) {
+            this.setFlagDraw(false);
+        } else {
+            this.setFlagDraw(true)
+        }
 
-/**geometryFctDraw
- * @param evt
- */
-ol.control.ControlDrawFeatures.prototype.editEndFeature = function(evt)
-{
-    var features = evt.features.getArray();
+        if (this.getFlagDraw() == true) {
+            var geometryFctDraw;
+            var typeSelect = evt.target.draw;
 
-    // Dont use ES2015 syntax "array.forEach(feature => { return feature; })"
-    features.forEach(function(feature, index) {
+            // Specific for square
+            if (typeSelect == 'Square') {
+                typeSelect = 'Circle';
+                geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
+            }
+
+            // Koding challenge Kuzzle : Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
+            // Do not use the this.getSelectedLayer(), use an temporarly vector layer, data will be adding in kuzzle
+            // and in kuzzle-sdk, add new features to layer
+            //this.tmpVectorSource = new ol.source.Vector();
+            //this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
+
+            // Draw new item
+            var draw = this.drawInteraction = new ol.interaction.Draw({
+                //features: features,
+                source : this.getSelectedLayer().getSource(),
+                features : new ol.Collection(),
+                type: /** @type {ol.geom.GeometryType} */ (typeSelect),
+                geometryFunction : geometryFctDraw,
+                style : this.styleAdd()
+            });
+
+            //this.drawInteraction.on('drawstart', function() {
+            //    this_.tmpVectorSource.clear();
+            //}, this);
+            this.drawInteraction.on('drawend', this.drawEndFeature, this);
+            this.map.addInteraction(this.drawInteraction);
+        }
+    };
+
+    /**
+     * Event listener call when a new feature is created
+     * @param evt
+     */
+    ol.control.ControlDrawFeatures.prototype.drawEndFeature = function(evt)
+    {
+        var feature = evt.feature;
+        var parser = new ol.format.GeoJSON();
+
         // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
         if ('Circle' == feature.getGeometry().getType()) {
             //var parserCircle = parser.writeCircleGeometry_()
         } else {
-            // Edit document in Kuzzle
-            // TODO
+            // Addind feature to source vector
+            var featureGeoJSON = parser.writeFeatureObject(feature);
+
+            /**
+             * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
+             * And add to layer
+             */
         }
-    });
-};
+    };
 
+    /**
+     * Record features in local storage
+     * /!\ circles can't ge parsing in GeoJSON : https://github.com/openlayers/ol3/pull/3434
+     */
+    ol.control.ControlDrawFeatures.prototype.setFeaturesInLocalStorage = function()
+    {
+        var features = this.getSelectedLayer().getSource().getFeatures();
+        var parser = new ol.format.GeoJSON();
 
-/**
- * Delete a feature from map
- * @param evt
- */
-ol.control.ControlDrawFeatures.prototype.controlDelOnMap = function (evt)
-{
-    if (!this.getSelectedLayer()) {
-        this.setFlagDraw(false)
-    } else {
-        this.setFlagDraw(true);
+        if (features.length > 0) {
+            var featuresGeoJson = parser.writeFeatures(features)
+            localStorage.clear();
+            localStorage.setItem('features', JSON.stringify(featuresGeoJson));
+        }
     }
 
-    if (this.getFlagDraw() == true) {
-        this.map = this.getMap();
 
-        // Select Interaction
-        var selectDelInteraction = this.selectDelInteraction = new ol.interaction.Select({
-            condition: ol.events.condition.click,
-            source : function(layer) {
-                if (layer == this.getSelectedLayer()) {
-                    return layer
+    /**
+     * Edit or delete a feature
+     * @param evt
+     */
+    ol.control.ControlDrawFeatures.prototype.controlEditOnMap = function(evt) {
+        if (!this.getSelectedLayer()) {
+            this.setFlagDraw(false)
+        } else {
+            this.setFlagDraw(true);
+        }
+
+        if (this.getFlagDraw() == true) {
+            this.map = this.getMap();
+
+            // Select Interaction
+            var selectedLayer = this.getSelectedLayer();
+            var editSelectInteraction = this.editSelectInteraction = new ol.interaction.Select({
+                condition: ol.events.condition.singleClick,
+                source : function(layer) {
+                    if (layer == this.getSelectedLayer()) {
+                        return layer
+                    }
                 }
+            });
+            this.map.addInteraction(editSelectInteraction);
+
+            // Modify interaction
+            var mod = this.modifyInteraction = new ol.interaction.Modify({
+                features: editSelectInteraction.getFeatures(),
+                style: this.styleEdit(),
+                zIndex: 50
+            });
+            mod.on('modifyend', this.editEndFeature, this);
+
+            this.map.addInteraction(mod);
+        }
+    };
+
+    /**geometryFctDraw
+     * @param evt
+     */
+    ol.control.ControlDrawFeatures.prototype.editEndFeature = function(evt)
+    {
+        var features = evt.features.getArray();
+
+        // Dont use ES2015 syntax "array.forEach(feature => { return feature; })"
+        features.forEach(function(feature, index) {
+            // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
+            if ('Circle' == feature.getGeometry().getType()) {
+                //var parserCircle = parser.writeCircleGeometry_()
+            } else {
+                // Edit document in Kuzzle
+                // TODO
             }
         });
-        this.map.addInteraction(selectDelInteraction);
+    };
 
-        var this_ = this;
-        selectDelInteraction.getFeatures().addEventListener('add', function(e) {
-            var feature = e.element;
-            if(confirm('Are you sure you want to delete this feature ?')) {
-                if (undefined != feature) {
-                    // Remove from interaction
-                    var featureId = feature.getId();
-                    selectDelInteraction.getFeatures().remove(feature);
-                   
-				// ---------------------------------------------- //
-                // Here, override for deleting from your database //
-                // ---------------------------------------------- //
 
-                } else {
-                    
+    /**
+     * Delete a feature from map
+     * @param evt
+     */
+    ol.control.ControlDrawFeatures.prototype.controlDelOnMap = function (evt)
+    {
+        if (!this.getSelectedLayer()) {
+            this.setFlagDraw(false)
+        } else {
+            this.setFlagDraw(true);
+        }
+
+        if (this.getFlagDraw() == true) {
+            this.map = this.getMap();
+
+            // Select Interaction
+            var selectDelInteraction = this.selectDelInteraction = new ol.interaction.Select({
+                condition: ol.events.condition.click,
+                source : function(layer) {
+                    if (layer == this.getSelectedLayer()) {
+                        return layer
+                    }
                 }
-                            }
-            e.preventDefault();
-        });
+            });
+            this.map.addInteraction(selectDelInteraction);
 
-        var delInteraction = this.delInteraction = new ol.interaction.Modify({
-            style: this.styleEdit(),
-            features: selectDelInteraction.getFeatures(),
-            deleteCondition: function(event) {
-                return ol.events.condition.singleClick(event);
-            }
-        });
-        // add it to the map
-        this.map.addInteraction(delInteraction);
-    }
-};
+            var this_ = this;
+            selectDelInteraction.getFeatures().addEventListener('add', function(e) {
+                var feature = e.element;
+                if(confirm('Are you sure you want to delete this feature ?')) {
+                    if (undefined != feature) {
+                        // Remove from interaction
+                        var featureId = feature.getId();
+                        selectDelInteraction.getFeatures().remove(feature);
+
+                        // ---------------------------------------------- //
+                        // Here, override for deleting from your database //
+                        // ---------------------------------------------- //
+
+                    } else {
+
+                    }
+                }
+                e.preventDefault();
+            });
+
+            var delInteraction = this.delInteraction = new ol.interaction.Modify({
+                style: this.styleEdit(),
+                features: selectDelInteraction.getFeatures(),
+                deleteCondition: function(event) {
+                    return ol.events.condition.singleClick(event);
+                }
+            });
+            // add it to the map
+            this.map.addInteraction(delInteraction);
+        }
+    };
 
 
-/**
- * Styles of selected layer
- */
-ol.control.ControlDrawFeatures.prototype.styleAdd = function()
-{
-    var style = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: [69, 175, 157, 0.4] //#45B29D
-        }),
-        stroke: new ol.style.Stroke({
-            color: [0, 75, 82, 0.75], //#004B52
-            width: 1.5
-        }),
-        image: new ol.style.Circle({
-            radius: 7,
+    /**
+     * Styles of selected layer
+     */
+    ol.control.ControlDrawFeatures.prototype.styleAdd = function()
+    {
+        var style = new ol.style.Style({
             fill: new ol.style.Fill({
-                color: [60, 255, 100, 0.4]
+                color: [69, 175, 157, 0.4] //#45B29D
             }),
             stroke: new ol.style.Stroke({
-                color: [255, 255, 255, 0.75],
+                color: [0, 75, 82, 0.75], //#004B52
                 width: 1.5
-            })
-        }),
-        zIndex: 100000
-    });
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: [60, 255, 100, 0.4]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: [255, 255, 255, 0.75],
+                    width: 1.5
+                })
+            }),
+            zIndex: 100000
+        });
 
-    return style;
-};
+        return style;
+    };
 
-ol.control.ControlDrawFeatures.prototype.styleEdit = function()
-{
-    var style = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: [4, 100, 128, 0.4] //#046380
-        }),
-        stroke: new ol.style.Stroke({
-            color: [0, 64, 28, 0.75], //#004080
-            width: 1.5
-        }),
-        image: new ol.style.Circle({
-            radius: 7,
+    ol.control.ControlDrawFeatures.prototype.styleEdit = function()
+    {
+        var style = new ol.style.Style({
             fill: new ol.style.Fill({
-                color: [4, 100, 128, 0.4]
+                color: [4, 100, 128, 0.4] //#046380
             }),
             stroke: new ol.style.Stroke({
-                color: [0, 64, 28, 0.75],
+                color: [0, 64, 28, 0.75], //#004080
                 width: 1.5
-            })
-        }),
-        zIndex: 100000
-    });
-    return style;
-};
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: [4, 100, 128, 0.4]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: [0, 64, 28, 0.75],
+                    width: 1.5
+                })
+            }),
+            zIndex: 100000
+        });
+        return style;
+    };
 
 
-/**
- * Getters/setters of selected layer : Set your layer according to your need :)
- * @param layer
- */
-ol.control.ControlDrawFeatures.prototype.setSelectedLayer = function(layer)
-{
-    this.selectedLayers = layer;
-};
+    /**
+     * Getters/setters of selected layer : Set your layer according to your need :)
+     * @param layer
+     */
+    ol.control.ControlDrawFeatures.prototype.setSelectedLayer = function(layer)
+    {
+        this.selectedLayers = layer;
+    };
 
-ol.control.ControlDrawFeatures.prototype.getSelectedLayer = function()
-{
-    return this.selectedLayers;
-};
+    ol.control.ControlDrawFeatures.prototype.getSelectedLayer = function()
+    {
+        return this.selectedLayers;
+    };
 
-/**
- * Add a flag if Mode draw or not
- * @param flagDraw
- */
-ol.control.ControlDrawFeatures.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
-{
-    this.flagDraw = flagDraw;
-};
+    /**
+     * Add a flag if Mode draw or not
+     * @param flagDraw
+     */
+    ol.control.ControlDrawFeatures.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
+    {
+        this.flagDraw = flagDraw;
+    };
 
-ol.control.ControlDrawFeatures.prototype.getFlagDraw = function()
-{
-    return this.flagDraw;
-};
+    ol.control.ControlDrawFeatures.prototype.getFlagDraw = function()
+    {
+        return this.flagDraw;
+    };
 
-/**
- * Flag for local storage
- * @param locStor
- */
-ol.control.ControlDrawFeatures.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
-{
-    this.flagLocStor = locStor;
-};
+    /**
+     * Flag for local storage
+     * @param locStor
+     */
+    ol.control.ControlDrawFeatures.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
+    {
+        this.flagLocStor = locStor;
+    };
 
-ol.control.ControlDrawFeatures.prototype.getFlagLocStor = function()
-{
-    return this.flagLocStor;
-};
+    ol.control.ControlDrawFeatures.prototype.getFlagLocStor = function()
+    {
+        return this.flagLocStor;
+    };
+
+
+}));
 
 
 /**
