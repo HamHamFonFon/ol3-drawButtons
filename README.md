@@ -1,5 +1,6 @@
 OpenLayers Drawing Features Plugin
 ===================
+[![Build Status](https://travis-ci.org/HamHamFonFon/ol3-drawFeatures.svg?branch=master)](https://travis-ci.org/HamHamFonFon/ol3-drawFeatures)
 
 Welcome !! DrawFeatures is an OpenLayers 3 plugin for drawing new features, edit or delete feature from map. See [usage](https://rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/index.html) for demo.
 
