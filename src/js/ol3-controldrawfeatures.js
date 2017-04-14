@@ -7,7 +7,7 @@
  * @extends ol.control.Control
  *
  */
-ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
+ol.control.ControlDrawFeatures = function (selected_layer, opt_options) {
 
     // Get options
     var options = opt_options || {};
@@ -196,13 +196,13 @@ ol.control.ControlDrawButtons = function (selected_layer, opt_options) {
     });
 };
 
-ol.inherits(ol.control.ControlDrawButtons, ol.control.Control);
+ol.inherits(ol.control.ControlDrawFeatures, ol.control.Control);
 
 /**
  * Drawing on map
  * @param evt
  */
-ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
+ol.control.ControlDrawFeatures.prototype.drawOnMap = function(evt)
 {
     this.map = this.getMap();
     var this_ = this;
@@ -250,7 +250,7 @@ ol.control.ControlDrawButtons.prototype.drawOnMap = function(evt)
  * Event listener call when a new feature is created
  * @param evt
  */
-ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
+ol.control.ControlDrawFeatures.prototype.drawEndFeature = function(evt)
 {
     var feature = evt.feature;
     var parser = new ol.format.GeoJSON();
@@ -273,7 +273,7 @@ ol.control.ControlDrawButtons.prototype.drawEndFeature = function(evt)
  * Record features in local storage
  * /!\ circles can't ge parsing in GeoJSON : https://github.com/openlayers/ol3/pull/3434
  */
-ol.control.ControlDrawButtons.prototype.setFeaturesInLocalStorage = function()
+ol.control.ControlDrawFeatures.prototype.setFeaturesInLocalStorage = function()
 {
     var features = this.getSelectedLayer().getSource().getFeatures();
     var parser = new ol.format.GeoJSON();
@@ -290,7 +290,7 @@ ol.control.ControlDrawButtons.prototype.setFeaturesInLocalStorage = function()
  * Edit or delete a feature
  * @param evt
  */
-ol.control.ControlDrawButtons.prototype.controlEditOnMap = function(evt) {
+ol.control.ControlDrawFeatures.prototype.controlEditOnMap = function(evt) {
     if (!this.getSelectedLayer()) {
         this.setFlagDraw(false)
     } else {
@@ -327,7 +327,7 @@ ol.control.ControlDrawButtons.prototype.controlEditOnMap = function(evt) {
 /**geometryFctDraw
  * @param evt
  */
-ol.control.ControlDrawButtons.prototype.editEndFeature = function(evt)
+ol.control.ControlDrawFeatures.prototype.editEndFeature = function(evt)
 {
     var features = evt.features.getArray();
 
@@ -348,7 +348,7 @@ ol.control.ControlDrawButtons.prototype.editEndFeature = function(evt)
  * Delete a feature from map
  * @param evt
  */
-ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
+ol.control.ControlDrawFeatures.prototype.controlDelOnMap = function (evt)
 {
     if (!this.getSelectedLayer()) {
         this.setFlagDraw(false)
@@ -406,7 +406,7 @@ ol.control.ControlDrawButtons.prototype.controlDelOnMap = function (evt)
 /**
  * Styles of selected layer
  */
-ol.control.ControlDrawButtons.prototype.styleAdd = function()
+ol.control.ControlDrawFeatures.prototype.styleAdd = function()
 {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
@@ -432,7 +432,7 @@ ol.control.ControlDrawButtons.prototype.styleAdd = function()
     return style;
 };
 
-ol.control.ControlDrawButtons.prototype.styleEdit = function()
+ol.control.ControlDrawFeatures.prototype.styleEdit = function()
 {
     var style = new ol.style.Style({
         fill: new ol.style.Fill({
@@ -462,12 +462,12 @@ ol.control.ControlDrawButtons.prototype.styleEdit = function()
  * Getters/setters of selected layer : Set your layer according to your need :)
  * @param layer
  */
-ol.control.ControlDrawButtons.prototype.setSelectedLayer = function(layer)
+ol.control.ControlDrawFeatures.prototype.setSelectedLayer = function(layer)
 {
     this.selectedLayers = layer;
 };
 
-ol.control.ControlDrawButtons.prototype.getSelectedLayer = function()
+ol.control.ControlDrawFeatures.prototype.getSelectedLayer = function()
 {
     return this.selectedLayers;
 };
@@ -476,12 +476,12 @@ ol.control.ControlDrawButtons.prototype.getSelectedLayer = function()
  * Add a flag if Mode draw or not
  * @param flagDraw
  */
-ol.control.ControlDrawButtons.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
+ol.control.ControlDrawFeatures.prototype.setFlagDraw = function(/** @type {boolean} */flagDraw)
 {
     this.flagDraw = flagDraw;
 };
 
-ol.control.ControlDrawButtons.prototype.getFlagDraw = function()
+ol.control.ControlDrawFeatures.prototype.getFlagDraw = function()
 {
     return this.flagDraw;
 };
@@ -490,12 +490,12 @@ ol.control.ControlDrawButtons.prototype.getFlagDraw = function()
  * Flag for local storage
  * @param locStor
  */
-ol.control.ControlDrawButtons.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
+ol.control.ControlDrawFeatures.prototype.setFlagLocStor = function(/** @type {boolean} */locStor)
 {
     this.flagLocStor = locStor;
 };
 
-ol.control.ControlDrawButtons.prototype.getFlagLocStor = function()
+ol.control.ControlDrawFeatures.prototype.getFlagLocStor = function()
 {
     return this.flagLocStor;
 };
