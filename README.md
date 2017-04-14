@@ -6,7 +6,7 @@ Welcome !! DrawFeatures is an OpenLayers 3 plugin for drawing new features, edit
 Plugin Status
 -------------
 Is currently in Beta stage of development.
-v. 0.5.0
+v. 0.6.0
 
 Requirements
 -------------
@@ -23,9 +23,9 @@ Demo examples
 
 This exemple is showing how to use the plugin
 	
-  - [Basic usage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
+  - [Basic usage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/82f29a3f/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
-  - [Use Locale Storage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/local_storage.html) : use localStorage to store features
+  - [Use Locale Storage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/82f29a3f/examples/local_storage.html) : use localStorage to store features
 
 API
 -------------
