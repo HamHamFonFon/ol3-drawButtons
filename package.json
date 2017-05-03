@@ -2,9 +2,6 @@
   "name": "ol3-draw-features",
   "version": "1.0.0",
   "description": "Adding, edit, delete features with OpenLayers 3 controls",
-  "scripts": {
-    "build": "browserify -e src/js/ol3-controldrawfeatures.js -o ol.drawfeature.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HamHamFonFon/ol3-drawFeatures.git"
@@ -21,12 +18,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^14.3.0",
     "openlayers": "~3.20.1"
   },
   "homepage": "https://github.com/HamHamFonFon/ol3-drawFeatures#readme",
-  "main": "ol.drawfeature.js",
-  "directories": {
-    "example": "examples"
-  }
+  "main": "src/js/ol3-controldrawfeatures.js"
 }

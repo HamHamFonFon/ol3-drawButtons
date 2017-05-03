@@ -513,7 +513,8 @@
         return this.flagLocStor;
     };
 
-
+    var drawFeature = new ol.control.ControlDrawFeatures;
+    return drawFeature;
 }));
 
 
