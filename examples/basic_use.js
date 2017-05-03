@@ -62,5 +62,4 @@
     };
     var buttonsDrawControls = new ol.control.ControlDrawFeatures(vector_draw, options);
     map.addControl(buttonsDrawControls);
-
 })();
