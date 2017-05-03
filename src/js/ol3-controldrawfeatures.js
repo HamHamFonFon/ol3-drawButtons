@@ -233,12 +233,6 @@
                 geometryFctDraw = this.geometryFctDraw = ol.interaction.Draw.createRegularPolygon(4);
             }
 
-            // Koding challenge Kuzzle : Source and vector temporar for drawing : http://jsfiddle.net/jp4dojwu/
-            // Do not use the this.getSelectedLayer(), use an temporarly vector layer, data will be adding in kuzzle
-            // and in kuzzle-sdk, add new features to layer
-            //this.tmpVectorSource = new ol.source.Vector();
-            //this.tmpVectorLayer = new ol.layer.Vector({source:this.tmpVectorSource});
-
             // Draw new item
             var draw = this.drawInteraction = new ol.interaction.Draw({
                 //features: features,
@@ -249,9 +243,6 @@
                 style : this.styleAdd()
             });
 
-            //this.drawInteraction.on('drawstart', function() {
-            //    this_.tmpVectorSource.clear();
-            //}, this);
             this.drawInteraction.on('drawend', this.drawEndFeature, this);
             this.map.addInteraction(this.drawInteraction);
         }
@@ -274,9 +265,9 @@
             var featureGeoJSON = parser.writeFeatureObject(feature);
 
             /**
-             * OVERRIDE HERE TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
-             * And add to layer
+             * OVERRIDE LINE BELOW TO ADD NEW DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
              */
+            this.getSelectedLayer().getSource().addFeature(feature);
         }
     };
 
@@ -343,13 +334,17 @@
         var features = evt.features.getArray();
 
         // Dont use ES2015 syntax "array.forEach(feature => { return feature; })"
+        var this_ = this;
         features.forEach(function(feature, index) {
             // Problem with recuperation of a circle geometry : https://github.com/openlayers/ol3/pull/3434
             if ('Circle' == feature.getGeometry().getType()) {
                 //var parserCircle = parser.writeCircleGeometry_()
             } else {
-                // Edit document in Kuzzle
-                // TODO
+                /**
+                 * OVERRIDE LINE BELOW TO EDIT DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
+                 */
+                this_.getSelectedLayer().getSource().removeFeature(feature);
+                this_.getSelectedLayer().getSource().addFeature(feature);
             }
         });
     };
@@ -390,11 +385,10 @@
                         var featureId = feature.getId();
                         selectDelInteraction.getFeatures().remove(feature);
 
-                        // ---------------------------------------------- //
-                        // Here, override for deleting from your database //
-                        // ---------------------------------------------- //
-
-                    } else {
+                        /**
+                         * OVERRIDE LINE BELOW TO DELETE DATA IN DATABASE (MySQL, PostgreSQL, Elastic Search, Kuzzle...)
+                         */
+                        this_.getSelectedLayer().getSource().removeFeature(feature);
 
                     }
                 }
@@ -415,7 +409,8 @@
 
 
     /**
-     * Styles of selected layer
+     * Fix style mod interaction Add
+     * @returns {ol.style.Style}
      */
     ol.control.ControlDrawFeatures.prototype.styleAdd = function()
     {
@@ -443,6 +438,10 @@
         return style;
     };
 
+    /**
+     * Fix style features mode edition
+     * @returns {ol.style.Style}
+     */
     ol.control.ControlDrawFeatures.prototype.styleEdit = function()
     {
         var style = new ol.style.Style({
@@ -471,13 +470,16 @@
 
     /**
      * Getters/setters of selected layer : Set your layer according to your need :)
-     * @param layer
+     * @param ol.layer.Base layer
      */
     ol.control.ControlDrawFeatures.prototype.setSelectedLayer = function(layer)
     {
         this.selectedLayers = layer;
     };
 
+    /**
+     * @return ol.layer.Base selectedLayers
+     */
     ol.control.ControlDrawFeatures.prototype.getSelectedLayer = function()
     {
         return this.selectedLayers;
@@ -516,7 +518,7 @@
 
 
 /**
- *
+ * Override style
  * @type {{tabOptions: {}, olClassName: string, drawContainer: string, olGroupClassName: string, handleButtonsClick: null, handleControlsClick: null, handleGroupEnd: null, init: ol3buttons.init, elContainer: ol3buttons.elContainer, drawButtons: ol3buttons.drawButtons, drawControls: ol3buttons.drawControls}}
  */
 var ol3buttons = {
@@ -703,4 +705,4 @@ var ol3buttons = {
 
         return elementDrawControls;
     }
-}
+};
