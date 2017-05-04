@@ -1,13 +1,6 @@
-
 /**
  * OpenLayers 3 Draw Control
- * @param ol.Vector.Layer selected_layer : layer
- * @param array opt_options : options
- * @constructor
- * @extends ol.control.Control
- *
  */
-
 (function (root, factory) {
     if(typeof define === "function" && define.amd) {
         define(["openlayers"], factory);
@@ -18,6 +11,12 @@
     }
 }(this, function(ol) {
 
+    /**
+     * @extends {ol.control.Control}
+     * @param {ol.vector.Layer} selected_layer
+     * @param {object} opt_options
+     * @constructor
+     */
     ol.control.ControlDrawFeatures = function (selected_layer, opt_options) {
 
         // Get options
