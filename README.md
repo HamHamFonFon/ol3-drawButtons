@@ -3,6 +3,7 @@ OpenLayers Drawing Features Plugin
 [![Build Status](https://travis-ci.org/HamHamFonFon/ol3-drawFeatures.svg?branch=master)](https://travis-ci.org/HamHamFonFon/ol3-drawFeatures)
 
 Welcome !! DrawFeatures is an OpenLayers 3 plugin for drawing new features, edit or delete feature from map. See [usage](https://rawgit.com/HamHamFonFon/ol3-drawFeatures/master/examples/index.html) for demo.
+In progress: compatibility with NPM and Openlayers 4
 
 Requirements
 -------------
@@ -14,14 +15,21 @@ Getting started
   - Clone the repository : `git clone git@github.com:HamHamFonFon/ol3-drawFeatures.git ol3-drawFeatures`
   - Adding script JS and style CSS on your HTML code
 
+Getting started with NPM
+-------------
+  - `npm install --save ol3-draw-features`
+
+
 Demo examples
 -------------
 
-This exemple is showing how to use the plugin
+This exemples is showing how to use the plugin with Openlayers 3
 	
   - [Basic usage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/82f29a3f/examples/basic_use.html) : you can add new features to the map, then editing or deleting them
 
   - [Use Locale Storage](https://cdn.rawgit.com/HamHamFonFon/ol3-drawFeatures/82f29a3f/examples/local_storage.html) : use localStorage to store features
+
+Use with NPM : in progress...
 
 API
 -------------
@@ -65,7 +73,7 @@ var vector_draw = new ol.layer.Vector({
 |  - Polygon       |`Boolean`|Show polygon button|
 
 
-#### Exemple usage
+#### Exemple usage with Openlayers 3
 
 ```javascript
 var optionsControlDraw = {
@@ -81,6 +89,9 @@ var optionsControlDraw = {
 };
 var buttonsDrawControls = new ol.control.ControlDrawFeatures(myVectorLayer, optionsControlDraw);
 ```
+
+#### Exemple usage with NPM modules and Openlayers 4
+In progress...
 
 #### Extends
 
